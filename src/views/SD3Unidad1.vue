@@ -95,41 +95,58 @@
       <div class="section-block">
         <h4>1ª Generación (1945-1955) — Válvulas de vacío</h4>
         <ul class="list-styled">
-          <li><strong>Sin sistema operativo.</strong> La programación se realizaba directamente en lenguaje máquina mediante cables y microconmutadores.</li>
-          <li>Un solo programa a la vez, controlado manualmente por el operador.</li>
+          <li><strong>Sin sistema operativo.</strong> La programación se realizaba directamente en lenguaje máquina mediante cables y microconmutadores. No existía ningún software intermediario: el programador debía conocer en detalle el hardware para poder usarlo.</li>
+          <li><strong>Un solo programa a la vez</strong>, controlado manualmente por el operador. Si el programa fallaba, alguien tenía que ir físicamente a la máquina para diagnosticar el problema.</li>
           <li><strong>Tarjetas perforadas:</strong> eran el principal medio de entrada de datos e instrucciones. El programador codificaba su programa perforando patrones en cartulinas rectangulares, que luego la máquina leía mecánicamente. Cada tarjeta representaba una línea de código o un dato numérico. Un error implicaba volver a perforar la tarjeta; las pilas de cientos de tarjetas debían entregarse al operador y el resultado podía tardar horas o días en obtenerse.</li>
+          <li><strong>Hardware costoso y frágil:</strong> las válvulas de vacío consumían enorme cantidad de energía, generaban mucho calor y fallaban con frecuencia. Una computadora podía ocupar una habitación entera y requerir un equipo de técnicos para mantenerse en funcionamiento.</li>
+          <li><strong>Ejemplos históricos:</strong> ENIAC (1945), UNIVAC I (1951). Estas máquinas se usaban principalmente para cálculos científicos y militares, como trayectorias balísticas o cálculos del Proyecto Manhattan.</li>
         </ul>
       </div>
 
       <div class="section-block">
         <h4>2ª Generación (1955-1965) — Transistores</h4>
         <ul class="list-styled">
-          <li>Aparece el <strong>procesamiento por lotes (batch)</strong>: los trabajos se agrupaban y ejecutaban secuencialmente sin intervención manual entre ellos.</li>
-          <li>El <strong>GM-NAA I/O (1956)</strong> fue el primer sistema operativo, diseñado para automatizar la carga de trabajos en mainframes IBM.</li>
+          <li><strong>Reemplazo de válvulas por transistores:</strong> más pequeños, más rápidos, más confiables y con menor consumo energético. Esto redujo drásticamente el tamaño y el costo de las computadoras, permitiendo que empresas y universidades pudieran tener una.</li>
+          <li>Aparece el <strong>procesamiento por lotes (batch processing)</strong>: los trabajos se recopilaban, se agrupaban en un lote y se ejecutaban secuencialmente sin intervención manual entre ellos. El objetivo era minimizar el tiempo que la CPU pasaba ociosa esperando al operador.</li>
+          <li><strong>Lenguajes de alto nivel:</strong> surgen FORTRAN (1957) y COBOL (1959), que permitían programar sin escribir directamente en binario. Un compilador traducía el código fuente a instrucciones de máquina.</li>
+          <li>El <strong>GM-NAA I/O (1956)</strong> fue el primer sistema operativo reconocido, diseñado para automatizar la carga de trabajos en mainframes IBM 704. IBSYS y FMS fueron otros SO relevantes de esta era.</li>
+          <li><strong>Limitación clave:</strong> si un trabajo tardaba demasiado o fallaba, bloqueaba todo el lote. No había forma de interrumpirlo ni de interactuar con él durante la ejecución.</li>
         </ul>
       </div>
 
       <div class="section-block">
         <h4>3ª Generación (1965-1980) — Circuito integrado</h4>
         <ul class="list-styled">
-          <li>Surge la <strong>multiprogramación</strong>: varios programas residen en memoria simultáneamente.</li>
-          <li>Aparece el <strong>tiempo compartido (time-sharing)</strong>: la CPU alterna rápidamente entre programas para dar la ilusión de ejecución simultánea.</li>
+          <li><strong>Circuitos integrados (chips):</strong> transistores y componentes grabados en una sola placa de silicio. Esto multiplicó exponencialmente la capacidad de cómputo y redujo aún más los costos.</li>
+          <li>Surge la <strong>multiprogramación</strong>: varios programas residen en memoria simultáneamente y la CPU cambia entre ellos cuando uno está esperando E/S. La CPU ya no se queda ociosa mientras un programa espera leer del disco.</li>
+          <li>Aparece el <strong>tiempo compartido (time-sharing)</strong>: muchos usuarios pueden conectarse simultáneamente a través de terminales (teclado + pantalla) y reciben pequeñas rodajas de tiempo de CPU, dando la ilusión de que cada uno tiene su propia máquina.</li>
+          <li><strong>MULTICS (1965)</strong> fue el gran proyecto de investigación de esta era, desarrollado entre MIT, Bell Labs y GE. Aunque demasiado complejo para su época, sus ideas influyeron directamente en UNIX.</li>
+          <li><strong>UNIX (1969)</strong>: creado por Ken Thompson y Dennis Ritchie en Bell Labs como una versión simplificada de MULTICS. Escrito en C, era portable entre distintos tipos de hardware. Introdujo conceptos que son estándar hoy: sistema de archivos jerárquico, pipes, permisos de usuario.</li>
+          <li><strong>IBM System/360 (1964)</strong>: primera familia de computadoras compatible entre sí, con distintos modelos de diferente potencia pero con el mismo conjunto de instrucciones y el mismo SO (OS/360).</li>
         </ul>
       </div>
 
       <div class="section-block">
         <h4>4ª Generación (1980-1990) — Microprocesador</h4>
         <ul class="list-styled">
-          <li>Auge del <strong>ordenador personal (PC)</strong>.</li>
-          <li>Nacen sistemas como <strong>MS-DOS</strong>, las primeras versiones de <strong>Windows</strong> y UNIX se consolida como estándar.</li>
+          <li><strong>Microprocesador:</strong> toda la CPU en un solo chip (Intel 8080, Motorola 68000, Intel x86). Esto hizo posible la computadora personal a un precio accesible para hogares y pequeñas empresas.</li>
+          <li>Auge del <strong>ordenador personal (PC)</strong>: Apple II (1977), IBM PC (1981), Macintosh (1984). La computación dejó de ser exclusiva de grandes organizaciones.</li>
+          <li><strong>MS-DOS (1981)</strong>: sistema operativo de línea de comandos de Microsoft para el IBM PC. Simple pero funcional; el usuario debía memorizar comandos para navegar archivos y ejecutar programas.</li>
+          <li><strong>Interfaces gráficas (GUI):</strong> Xerox PARC inventó el concepto de ventanas, íconos y ratón. Apple lo popularizó con el Macintosh (1984); Microsoft respondió con Windows 1.0 (1985) sobre MS-DOS.</li>
+          <li><strong>UNIX se consolida</strong> como estándar en el ámbito universitario y científico. Surgen múltiples variantes (BSD, System V) y comienza la guerra de estándares POSIX.</li>
+          <li><strong>Redes locales (LAN):</strong> las computadoras comienzan a conectarse entre sí en oficinas. Aparecen los primeros sistemas operativos de red (Novell NetWare) que permiten compartir archivos e impresoras.</li>
         </ul>
       </div>
 
       <div class="section-block">
         <h4>5ª Generación y Actualidad (desde 1990)</h4>
         <ul class="list-styled">
-          <li>Surgimiento de <strong>sistemas distribuidos</strong>, interfaces gráficas intuitivas (GUI).</li>
-          <li>Dominio de sistemas móviles como <strong>Android e iOS</strong>, junto con la integración de servicios en la nube.</li>
+          <li><strong>Internet y la World Wide Web (1991):</strong> transforman radicalmente el rol del SO, que ahora debe gestionar conectividad de red como función central. Windows 95 integró TCP/IP de forma nativa.</li>
+          <li><strong>Linux (1991):</strong> Linus Torvalds lanzó el kernel Linux como proyecto de código abierto. Combinado con el software GNU, se convirtió en el SO dominante en servidores, supercomputadoras y sistemas embebidos.</li>
+          <li>Surgimiento de <strong>sistemas distribuidos</strong>: múltiples máquinas cooperan para ofrecer un servicio coherente. El SO debe coordinar procesos en distintos nodos de la red como si fueran uno solo.</li>
+          <li><strong>Virtualización:</strong> un SO puede ejecutar varios sistemas operativos "invitados" de forma simultánea mediante hipervisores (VMware, VirtualBox, Hyper-V). Fundamental para la computación en la nube.</li>
+          <li><strong>Sistemas móviles:</strong> Android (basado en Linux, 2008) e iOS (basado en UNIX/Darwin, 2007) llevan los SO a smartphones y tablets. Imponen nuevas restricciones de batería, seguridad y pantalla táctil.</li>
+          <li><strong>Computación en la nube (cloud):</strong> los recursos de cómputo, almacenamiento y red se ofrecen como servicio sobre internet (AWS, Azure, GCP). Los contenedores (Docker, Kubernetes) y los microservicios redefinen cómo se despliegan y gestionan las aplicaciones.</li>
         </ul>
       </div>
     </Accordion>
