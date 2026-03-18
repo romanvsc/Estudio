@@ -97,6 +97,7 @@
         <ul class="list-styled">
           <li><strong>Sin sistema operativo.</strong> La programación se realizaba directamente en lenguaje máquina mediante cables y microconmutadores.</li>
           <li>Un solo programa a la vez, controlado manualmente por el operador.</li>
+          <li><strong>Tarjetas perforadas:</strong> eran el principal medio de entrada de datos e instrucciones. El programador codificaba su programa perforando patrones en cartulinas rectangulares, que luego la máquina leía mecánicamente. Cada tarjeta representaba una línea de código o un dato numérico. Un error implicaba volver a perforar la tarjeta; las pilas de cientos de tarjetas debían entregarse al operador y el resultado podía tardar horas o días en obtenerse.</li>
         </ul>
       </div>
 

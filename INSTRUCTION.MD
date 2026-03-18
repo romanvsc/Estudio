@@ -170,22 +170,42 @@ El intercambio es una técnica de gestión para situaciones de **sobrecarga de m
 
 ### 3. Memoria Virtual
 
-La memoria virtual permite que **el espacio de direcciones de un programa sea mayor que la memoria física disponible**, manteniendo en RAM solo las partes activas y dejando el resto en el disco de forma transparente.
+La **memoria virtual** representa el salto evolutivo más importante en la gestión de almacenamiento de los sistemas operativos modernos, basándose en la premisa de que el espacio de direcciones de un programa puede ser mucho mayor que la memoria física (RAM) disponible.
 
-#### **Paginación**
-Es el método predominante para implementar memoria virtual hoy en día.
-*   **Funcionamiento:** Divide el espacio de direcciones lógicas en unidades de tamaño fijo llamadas **páginas** y la memoria física en trozos del mismo tamaño denominados **marcos o *frames***.
-*   **Traducción:** La Unidad de Gestión de Memoria (**MMU**) utiliza una **Tabla de Páginas** para traducir las direcciones virtuales en físicas.
-*   **Optimización (TLB):** Para evitar el doble acceso a memoria (uno para la tabla y otro para el dato), se usa una caché de alta velocidad llamada **Translation Lookaside Buffer (TLB)** que almacena las traducciones más recientes.
-*   **Ventajas:** Elimina la fragmentación externa y permite que las páginas de un programa no sean contiguas en la RAM.
+A continuación, se detallan los aspectos fundamentales de esta tecnología:
 
-#### **Segmentación**
-A diferencia de la paginación, la segmentación es una técnica orientada a la **estructura lógica del programa**.
-*   **Funcionamiento:** El espacio de direcciones se considera un conjunto de **segmentos de longitud variable**, cada uno con un significado semántico (código, datos, pila, tablas de símbolos).
-*   **Direccionamiento:** Una dirección lógica consta de un número de segmento y un desplazamiento. La **Tabla de Segmentos** almacena la dirección base física y el límite (longitud) de cada uno.
-*   **Protección y Compartición:** Facilita marcar segmentos como "solo ejecución" o "solo lectura" y permite que varios procesos compartan un mismo segmento de código (como bibliotecas) de forma sencilla.
-*   **Desventaja:** Al igual que las particiones variables, la segmentación pura sufre de **fragmentación externa**.
+### 1. Concepto y Abstracción
+La idea central es que el sistema operativo mantiene en la RAM solo las partes del programa, datos y pila que se están utilizando activamente, mientras que el resto permanece en el disco duro o SSD. Esto permite que un programa de 16 MB pueda ejecutarse en una máquina con solo 4 MB si se seleccionan cuidadosamente las partes residentes en cada instante.
 
+Esta técnica crea la **ilusión** de una memoria casi ilimitada y uniforme para el programador, quien ya no necesita preocuparse por las limitaciones físicas del hardware.
+
+### 2. El Mecanismo de Traducción: MMU
+Para que la memoria virtual funcione, es necesaria una distinción clara entre:
+*   **Espacio de direcciones lógicas (o virtuales):** Generadas por la CPU durante la ejecución del programa.
+*   **Espacio de direcciones físicas:** Ubicaciones reales en los chips de RAM.
+
+La transformación de una dirección lógica a una física es responsabilidad de la **Unidad de Gestión de Memoria (MMU)**, un componente de hardware gestionado por el sistema operativo. En su esquema más simple, la MMU suma un valor de reubicación a la dirección lógica para obtener la física.
+
+### 3. Técnicas de Implementación
+Existen tres métodos principales para implementar la memoria virtual:
+
+*   **Paginación:** Es el método predominante. Divide el espacio de direcciones lógicas en unidades de tamaño fijo llamadas **páginas** y la memoria física en trozos del mismo tamaño denominados **marcos** (*frames*). Una **Tabla de Páginas** sirve como índice para encontrar en qué marco físico está cada página virtual.
+*   **Segmentación:** Se orienta a la estructura lógica del software, dividiendo la memoria en segmentos de longitud variable (código, datos, pila, etc.) según la visión del programador.
+*   **Segmentación Paginada:** Combina ambas para obtener la potencia lógica de la segmentación con la eficiencia física de la paginación, dividiendo los segmentos lógicos en páginas físicas de tamaño fijo.
+
+### 4. Gestión de Fallos y Rendimiento
+Cuando la CPU intenta acceder a una página que no está cargada en la RAM (indicado por un bit de validez o presencia en la tabla), se produce un **fallo de página** (*page fault*). En este caso, el sistema operativo:
+1.  Localiza la página en el área de intercambio (*swap*) del disco.
+2.  Busca un marco libre en la RAM.
+3.  Si no hay marcos libres, ejecuta un **algoritmo de reemplazo** (como **LRU** —*Least Recently Used*— o **FIFO**) para desalojar una página existente.
+
+Para no penalizar el rendimiento con constantes accesos a la tabla de páginas en RAM, el hardware utiliza el **TLB (Translation Lookaside Buffer)**, una caché de alta velocidad que almacena las traducciones más recientes.
+
+### 5. Beneficios y Riesgos
+*   **Beneficios:** Independencia de la capacidad física, protección de procesos (un programa no puede acceder a la memoria de otro) y facilidad para compartir bibliotecas compartidas.
+*   **Riesgos:** Si un proceso no tiene suficientes marcos asignados, puede ocurrir la **hiperpaginación** (*thrashing*), situación en la que el sistema pasa más tiempo intercambiando páginas con el disco que ejecutando instrucciones, degradando drásticamente el rendimiento.
+
+¿Te gustaría que explicara con más detalle algún algoritmo específico de reemplazo de páginas como el de Reloj o LRU?
 ---
 
 ### 4. Sistemas Combinados: Segmentación Paginada
