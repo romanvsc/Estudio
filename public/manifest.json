@@ -1,0 +1,17 @@
+{
+  "name": "Estudio Contabilidad",
+  "short_name": "Contabilidad",
+  "description": "Aplicación interactiva para el estudio de contabilidad",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1117",
+  "theme_color": "#4f8ff7",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

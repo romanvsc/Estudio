@@ -1,0 +1,433 @@
+/* ============================================
+   DESIGN SYSTEM - Estudio Contabilidad
+   NEOBRUTALISM THEME
+   ============================================ */
+
+:root {
+  /* ─── Color Palette (Neobrutalism - Light default) ─── */
+  --bg-primary: #dde8f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eef4ff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0f6ff;
+  --bg-glass: #ffffff;
+
+  --text-primary: #0a0a0a;
+  --text-secondary: #2a2a2a;
+  --text-muted: #555555;
+
+  --accent-blue: #4361ee;
+  --accent-blue-soft: #c8d4ff;
+  --accent-teal: #06d6a0;
+  --accent-teal-soft: #b0f5e5;
+  --accent-amber: #f5a623;
+  --accent-amber-soft: #fde8b8;
+  --accent-red: #ef233c;
+  --accent-red-soft: #fcd0d5;
+  --accent-purple: #7209b7;
+  --accent-purple-soft: #e4c2ff;
+  --accent-gold: #f4d03f;
+  --accent-gold-soft: #fdf4c0;
+
+  --border-color: #0a0a0a;
+  --border-color-hover: #0a0a0a;
+  --border-width: 2px;
+  --border-width-thick: 3px;
+
+  --sidebar-width: 280px;
+  --header-height: 64px;
+
+  /* ─── Neobrutalism Shadows (hard offset) ─── */
+  --shadow-sm: 3px 3px 0 #0a0a0a;
+  --shadow-md: 4px 4px 0 #0a0a0a;
+  --shadow-lg: 6px 6px 0 #0a0a0a;
+  --shadow-glow-blue: 4px 4px 0 #0a0a0a;
+  --shadow-glow-teal: 4px 4px 0 #0a0a0a;
+
+  /* ─── Transitions ─── */
+  --transition-fast: 100ms ease;
+  --transition-base: 150ms ease;
+  --transition-slow: 250ms ease;
+
+  /* ─── Radius (Neobrutalism = minimal) ─── */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+}
+
+/* ─── Dark Theme (Neobrutalism dark) ─── */
+[data-theme="dark"] {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+  --bg-card: #1e1e2e;
+  --bg-card-hover: #252540;
+  --bg-glass: #1e1e2e;
+
+  --text-primary: #f0f0f0;
+  --text-secondary: #c0c0c0;
+  --text-muted: #888888;
+
+  --accent-blue: #4cc9f0;
+  --accent-blue-soft: #0d3a4a;
+  --accent-teal: #06d6a0;
+  --accent-teal-soft: #063d2e;
+  --accent-amber: #f5a623;
+  --accent-amber-soft: #3d2800;
+  --accent-red: #ff4757;
+  --accent-red-soft: #3d0a10;
+  --accent-purple: #c77dff;
+  --accent-purple-soft: #2d0a3d;
+  --accent-gold: #f4d03f;
+  --accent-gold-soft: #3d3000;
+
+  --border-color: #f0f0f0;
+  --border-color-hover: #ffffff;
+
+  --shadow-sm: 3px 3px 0 #f0f0f0;
+  --shadow-md: 4px 4px 0 #f0f0f0;
+  --shadow-lg: 6px 6px 0 #f0f0f0;
+  --shadow-glow-blue: 4px 4px 0 #f0f0f0;
+  --shadow-glow-teal: 4px 4px 0 #f0f0f0;
+}
+
+/* ─── Reset & Base ─── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─── Neobrutalism Grid Background ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(67, 97, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67, 97, 238, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] body::before {
+  background-image:
+    linear-gradient(rgba(76, 201, 240, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(76, 201, 240, 0.05) 1px, transparent 1px);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-left: 2px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-blue);
+  border: 2px solid var(--border-color);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+}
+
+/* ─── Utilities ─── */
+.mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--transition-base);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all var(--transition-base);
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* ─── Typography ─── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.05rem;
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* ─── Common Components ─── */
+.glass-card {
+  background: var(--bg-card);
+  border: var(--border-width-thick) solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--border-color);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 2px solid var(--border-color);
+}
+
+.badge-blue {
+  background: var(--accent-blue-soft);
+  color: var(--accent-blue);
+}
+
+.badge-teal {
+  background: var(--accent-teal-soft);
+  color: var(--accent-teal);
+}
+
+.badge-amber {
+  background: var(--accent-amber-soft);
+  color: var(--accent-amber);
+}
+
+.badge-red {
+  background: var(--accent-red-soft);
+  color: var(--accent-red);
+}
+
+.badge-purple {
+  background: var(--accent-purple-soft);
+  color: var(--accent-purple);
+}
+
+/* ─── Content Spacing ─── */
+.section-block {
+  margin-bottom: 2rem;
+}
+
+.section-block:last-child {
+  margin-bottom: 0;
+}
+
+.list-styled {
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.list-styled li {
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  line-height: 1.7;
+}
+
+.list-styled li::marker {
+  color: var(--accent-blue);
+}
+
+.sub-list {
+  padding-left: 1.25rem;
+  margin-top: 0.3rem;
+}
+
+.sub-list li::marker {
+  color: var(--accent-teal);
+}
+
+.highlight {
+  color: var(--accent-amber);
+  font-weight: 500;
+}
+
+/* ─── Responsive ─── */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* ─── Print Styles ─── */
+@media print {
+  :root {
+    --bg-primary: #fff;
+    --bg-secondary: #fff;
+    --bg-tertiary: #f9f9f9;
+    --bg-card: #fff;
+    --text-primary: #000;
+    --text-secondary: #333;
+    --text-muted: #666;
+    --border-color: #ccc;
+  }
+
+  .sidebar,
+  .top-bar,
+  .theme-btn,
+  .menu-btn,
+  .search-wrapper,
+  .pomodoro-toggle,
+  .btn-primary,
+  .btn-secondary,
+  button {
+    display: none !important;
+  }
+
+  .main-area {
+    margin-left: 0 !important;
+  }
+
+  .content-area {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .accordion {
+    break-inside: avoid;
+  }
+
+  .accordion-body {
+    display: block !important;
+    max-height: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ─── Stamp Effect Utility ─── */
+.stamp-effect {
+  position: relative;
+}
+
+.stamp-effect::after {
+  content: '✓ DOMINADO';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--accent-teal);
+  border: 4px solid var(--accent-teal);
+  border-radius: var(--radius-md);
+  padding: 4px 16px;
+  pointer-events: none;
+  opacity: 0.25;
+  white-space: nowrap;
+  text-transform: uppercase;
+  animation: stampAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes stampAppear {
+  0% {
+    transform: translate(-50%, -50%) rotate(-12deg) scale(2);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-12deg) scale(1);
+    opacity: 0.25;
+  }
+}
