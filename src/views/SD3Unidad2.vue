@@ -59,7 +59,7 @@
     <!-- Tema 1: Anatomía de un Proceso -->
     <Accordion id="sd3u2-t1" title="Anatomía Detallada de un Proceso" :icon="Cpu" number="Tema 1" color="teal" :defaultOpen="true">
       <InfoCard type="definition" label="Definición">
-        <p>Un <strong>proceso</strong> no es solo un programa en ejecución, sino una entidad dinámica y activa gestionada por el núcleo. El SO abstrae el procesador físico en múltiples <strong>procesadores virtuales</strong>, permitiendo que varios programas se ejecuten "simultáneamente".</p>
+        <p>Un <strong>proceso</strong> es un programa en ejecución junto con su estado, recursos y contexto, gestionado por el sistema operativo. Representa una entidad dinámica que permite la ejecución concurrente de múltiples programas mediante la administración del tiempo del procesador.</p>
       </InfoCard>
 
       <InfoCard type="example" label="Ejemplo sencillo">
