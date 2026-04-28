@@ -24,8 +24,7 @@ function ensureUnit(data, unitId) {
     data.units[id] = {
       topics: {},
       spacedRepetition: { wrongQuestionIds: [], updatedAt: null },
-      quizHistory: [],
-      flashcardMastery: []
+      quizHistory: []
     }
   }
   if (!data.units[id].topics) data.units[id].topics = {}
@@ -33,7 +32,6 @@ function ensureUnit(data, unitId) {
     data.units[id].spacedRepetition = { wrongQuestionIds: [], updatedAt: null }
   }
   if (!data.units[id].quizHistory) data.units[id].quizHistory = []
-  if (!data.units[id].flashcardMastery) data.units[id].flashcardMastery = []
   return data.units[id]
 }
 
@@ -122,28 +120,6 @@ export function useStudyProgress(unitId) {
     return unit.quizHistory || []
   }
 
-  // --- Flashcard Mastery ---
-  const markFlashcardKnown = (cardId) => {
-    const data = readStorage()
-    const unit = ensureUnit(data, unitId)
-    const set = new Set(unit.flashcardMastery)
-    set.add(cardId)
-    unit.flashcardMastery = Array.from(set)
-    writeStorage(data)
-  }
-
-  const unmarkFlashcardKnown = (cardId) => {
-    const data = readStorage()
-    const unit = ensureUnit(data, unitId)
-    unit.flashcardMastery = (unit.flashcardMastery || []).filter((id) => id !== cardId)
-    writeStorage(data)
-  }
-
-  const getKnownFlashcards = () => {
-    const unit = getUnitData()
-    return new Set(unit.flashcardMastery || [])
-  }
-
   return {
     getTopicStatus,
     setTopicStatus,
@@ -152,10 +128,7 @@ export function useStudyProgress(unitId) {
     getWrongQuestions,
     getSummary,
     saveQuizAttempt,
-    getQuizHistory,
-    markFlashcardKnown,
-    unmarkFlashcardKnown,
-    getKnownFlashcards
+    getQuizHistory
   }
 }
 

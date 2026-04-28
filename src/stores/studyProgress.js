@@ -26,13 +26,12 @@ function writeStorage(data) {
 function ensureUnit(data, unitId) {
     const id = String(unitId)
     if (!data.units[id]) {
-        data.units[id] = { topics: {}, spacedRepetition: { wrongQuestionIds: [], updatedAt: null }, quizHistory: [], flashcardMastery: [] }
+        data.units[id] = { topics: {}, spacedRepetition: { wrongQuestionIds: [], updatedAt: null }, quizHistory: [] }
     }
     const unit = data.units[id]
     if (!unit.topics) unit.topics = {}
     if (!unit.spacedRepetition) unit.spacedRepetition = { wrongQuestionIds: [], updatedAt: null }
     if (!unit.quizHistory) unit.quizHistory = []
-    if (!unit.flashcardMastery) unit.flashcardMastery = []
     return unit
 }
 
@@ -44,7 +43,6 @@ const ACHIEVEMENTS = [
     { id: 'streak-7', name: 'Semana Completa', description: '7 días seguidos', icon: '💪', rarity: 'rare' },
     { id: 'unit-master', name: 'Maestro de Unidad', description: '100% dominado en una unidad', icon: '🏆', rarity: 'epic' },
     { id: 'quiz-veteran', name: 'Veterano', description: 'Completar 10 quizzes', icon: '🎖️', rarity: 'rare' },
-    { id: 'flash-master', name: 'Rey de las Flashcards', description: 'Dominar 20 flashcards', icon: '🃏', rarity: 'rare' },
     { id: 'all-units', name: 'Explorador', description: 'Visitar las 5 unidades', icon: '🧭', rarity: 'common' },
     { id: 'night-owl', name: 'Búho Nocturno', description: 'Estudiar después de las 22:00', icon: '🦉', rarity: 'common' },
     { id: 'early-bird', name: 'Madrugador', description: 'Estudiar antes de las 7:00', icon: '🐦', rarity: 'common' }
@@ -109,7 +107,6 @@ export const useStudyStore = defineStore('study', () => {
     function checkAchievements(context = {}) {
         const data = readStorage()
         const totalQuizzes = getAllQuizHistoryFromData(data).length
-        const totalFlashcards = Object.values(data.units || {}).reduce((sum, u) => sum + (u.flashcardMastery || []).length, 0)
         const hour = new Date().getHours()
         const streak = data.streak?.current || 0
         const visitedUnits = new Set(Object.keys(data.units || {}).filter(id => {
@@ -120,7 +117,6 @@ export const useStudyStore = defineStore('study', () => {
         // Check conditions
         if (totalQuizzes >= 1) unlockAchievement('first-quiz')
         if (totalQuizzes >= 10) unlockAchievement('quiz-veteran')
-        if (totalFlashcards >= 20) unlockAchievement('flash-master')
         if (streak >= 3) unlockAchievement('streak-3')
         if (streak >= 7) unlockAchievement('streak-7')
         if (hour >= 22) unlockAchievement('night-owl')
@@ -195,31 +191,6 @@ export const useStudyStore = defineStore('study', () => {
     function getWrongQuestions(unitId) {
         const unit = ensureUnit(snapshot.value, unitId)
         return unit.spacedRepetition.wrongQuestionIds || []
-    }
-
-    function markFlashcardKnown(unitId, cardId) {
-        const data = readStorage()
-        const unit = ensureUnit(data, unitId)
-        const set = new Set(unit.flashcardMastery)
-        set.add(cardId)
-        unit.flashcardMastery = Array.from(set)
-        writeStorage(data)
-        updateStreak()
-        refresh()
-        checkAchievements()
-    }
-
-    function unmarkFlashcardKnown(unitId, cardId) {
-        const data = readStorage()
-        const unit = ensureUnit(data, unitId)
-        unit.flashcardMastery = (unit.flashcardMastery || []).filter(id => id !== cardId)
-        writeStorage(data)
-        refresh()
-    }
-
-    function getKnownFlashcards(unitId) {
-        const unit = ensureUnit(snapshot.value, unitId)
-        return new Set(unit.flashcardMastery || [])
     }
 
     function getSummary(unitId, topicIds = []) {
@@ -331,9 +302,6 @@ export const useStudyStore = defineStore('study', () => {
         saveWrongQuestions,
         clearWrongQuestions,
         getWrongQuestions,
-        markFlashcardKnown,
-        unmarkFlashcardKnown,
-        getKnownFlashcards,
         getSummary,
         toggleBookmark,
         getBookmarks,

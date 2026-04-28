@@ -26,18 +26,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -48,12 +36,6 @@
           <span>Coincide con: {{ result.term }}</span>
         </button>
       </div>
-    </div>
-
-    <StudyFlashcards :cards="flashcards" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz v-for="quiz in topicQuickChecks" :key="quiz.topicId" :title="quiz.title" :topicId="quiz.topicId" :question="quiz.question" :options="quiz.options" :correctIndex="quiz.correctIndex" @answered="handleQuickCheck" />
     </div>
 
     <!-- Tema 1: Anatomía de un Proceso -->
@@ -238,8 +220,6 @@ import { computed, onMounted, reactive } from 'vue'
 import Accordion from '../components/Accordion.vue'
 import InfoCard from '../components/InfoCard.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
-import StudyFlashcards from '../components/StudyFlashcards.vue'
-import TopicQuickQuiz from '../components/TopicQuickQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
 import { Cpu, FileText, GitBranch, Lock, Puzzle } from 'lucide-vue-next'
 
@@ -251,23 +231,6 @@ const topicMeta = [
   { id: 'sd3u2-t3', anchor: 'sd3u2-t3', number: 'Tema 3', title: 'Ciclo de Vida y Jerarquías', keywords: ['nuevo', 'listo', 'ejecutando', 'bloqueado', 'zombie', 'huérfano', 'fork'], summary: ['5 estados de un proceso.', 'fork() crea procesos hijos.', 'Zombies y huérfanos son casos especiales.'] },
   { id: 'sd3u2-t4', anchor: 'sd3u2-t4', number: 'Tema 4', title: 'Sincronización e IPC', keywords: ['condición de competencia', 'exclusión mutua', 'semáforo', 'monitor', 'TSL', 'región crítica'], summary: ['Condición de competencia: orden importa.', 'Semáforos: Down/Up para coordinar.', 'Monitores: exclusión mutua automática.'] },
   { id: 'sd3u2-t5', anchor: 'sd3u2-t5', number: 'Tema 5', title: 'Problemas Clásicos', keywords: ['filósofos', 'lectores', 'escritores', 'barbero', 'deadlock', 'inanición'], summary: ['Filósofos: riesgo de deadlock.', 'Lectores/Escritores: riesgo de inanición.', 'Barbero: coordinación con semáforos.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué diferencia hay entre programa y proceso?', answer: 'El programa es código estático en disco; el proceso es ese programa en ejecución con su estado dinámico.', level: 'fácil' },
-  { question: '¿Qué contiene el PCB?', answer: 'PID, contador de programa, registros, estado del proceso y estado de E/S.', level: 'media' },
-  { question: '¿Qué es un proceso zombie?', answer: 'Un proceso que terminó pero sigue en la tabla porque su padre no leyó su estado de salida.', level: 'media' },
-  { question: '¿Qué es una condición de competencia?', answer: 'Cuando el resultado depende del orden de ejecución de los procesos al acceder a datos compartidos.', level: 'fácil' },
-  { question: '¿Cómo funciona un semáforo?', answer: 'Es una variable con operaciones Down (decrementa/bloquea) y Up (incrementa/despierta). Puede ser binario o general.', level: 'difícil' },
-  { question: '¿Qué problema ilustra la Cena de los Filósofos?', answer: 'El riesgo de interbloqueo (deadlock) cuando procesos compiten por recursos compartidos de forma circular.', level: 'difícil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'sd3u2-t1', title: 'Chequeo Tema 1', question: 'El heap crece hacia...', options: ['Direcciones inferiores', 'Direcciones superiores', 'No crece'], correctIndex: 1 },
-  { topicId: 'sd3u2-t2', title: 'Chequeo Tema 2', question: 'El PCB guarda...', options: ['Solo el nombre del programa', 'PID, PC, registros y estado', 'El código fuente'], correctIndex: 1 },
-  { topicId: 'sd3u2-t3', title: 'Chequeo Tema 3', question: 'Un proceso cuyo padre murió es un...', options: ['Zombie', 'Huérfano', 'Demonio'], correctIndex: 1 },
-  { topicId: 'sd3u2-t4', title: 'Chequeo Tema 4', question: 'La operación Down de un semáforo...', options: ['Siempre incrementa', 'Decrementa; si llega a 0, bloquea', 'Elimina el proceso'], correctIndex: 1 },
-  { topicId: 'sd3u2-t5', title: 'Chequeo Tema 5', question: 'Los Filósofos que cenan ilustran el problema de...', options: ['Fragmentación de memoria', 'Deadlock', 'Paginación'], correctIndex: 1 }
 ]
 
 const { getTopicStatus, setTopicStatus, getSummary } = useStudyProgress('sd3-2')
@@ -286,7 +249,6 @@ const searchResults = computed(() => {
 })
 
 function setStatus(topicId, status) { topicStatus[topicId] = status; setTopicStatus(topicId, status) }
-function handleQuickCheck({ topicId, isCorrect }) { setStatus(topicId, isCorrect ? 'dominado' : 'en-curso') }
 function goToTopic(anchor) { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
 const quizQuestions = [
@@ -310,7 +272,7 @@ const quizQuestions = [
 .unit-header h1 { margin-bottom: 8px; }
 .unit-subtitle { color: var(--text-muted); font-size: 0.95rem; }
 .study-toolbar { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
-.study-progress-card, .summary-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
+.study-progress-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .status-grid { display: grid; gap: 8px; }
 .status-row { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -318,13 +280,8 @@ const quizQuestions = [
 .status-actions { display: flex; gap: 6px; }
 .status-btn { border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-secondary); border-radius: 6px; font-size: 0.72rem; padding: 5px 8px; cursor: pointer; }
 .status-btn.active { color: var(--accent-teal); border-color: var(--accent-teal); background: var(--accent-teal-soft); }
-.summary-grid { display: grid; gap: 10px; }
-.summary-item { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; }
-.summary-item ul { margin: 6px 0 0; padding-left: 18px; }
-.summary-item li { color: var(--text-secondary); font-size: 0.8rem; }
 .search-results-list { display: grid; gap: 8px; margin-top: 10px; }
 .search-result-item { border: 1px solid var(--border-color); background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 10px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
 .search-result-item span { color: var(--text-secondary); font-size: 0.8rem; }
-.mini-quiz-grid { margin-top: 12px; margin-bottom: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 </style>

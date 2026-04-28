@@ -11,8 +11,6 @@
       unitId="4"
       :searchQuery="props.searchQuery"
       :topicMeta="topicMeta"
-      :flashcards="flashcards"
-      :topicQuickChecks="topicQuickChecks"
       accent="purple"
     />
 
@@ -250,25 +248,6 @@ const topicMeta = [
   { id: 'u4-t6', anchor: 'u4-t6', number: 'Tema 6', title: 'Plan de cuentas', keywords: ['plan de cuentas', 'codificación'], summary: ['Lista ordenada de cuentas del sistema.', 'Debe ser completo y flexible.', 'Se diseña según actividad y necesidades.'] },
   { id: 'u4-t7', anchor: 'u4-t7', number: 'Tema 7', title: 'Manual de cuentas', keywords: ['manual de cuentas', 'debitar', 'acreditar'], summary: ['Define uso de cada cuenta.', 'Indica saldos habituales.', 'Unifica criterio de registración.'] },
   { id: 'u4-t8', anchor: 'u4-t8', number: 'Tema 8', title: 'Componentes financieros', keywords: ['componentes financieros implícitos', 'segregación'], summary: ['Separan precio contado de financiación.', 'Se reconocen como resultado financiero.', 'Mejoran la medición contable.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué refleja el saldo de una cuenta?', answer: 'La diferencia neta entre movimientos del Debe y Haber.', level: 'fácil' },
-  { question: '¿Qué cuenta regulariza a bienes de uso?', answer: 'Amortizaciones acumuladas.', level: 'fácil' },
-  { question: '¿Cómo se ordenan rubros del activo?', answer: 'Por grado de liquidez.', level: 'fácil' },
-  { question: '¿Qué limita la valuación de un activo?', answer: 'Su valor recuperable.', level: 'media' },
-  { question: '¿Para qué sirve el manual de cuentas?', answer: 'Para establecer reglas uniformes de uso, débito y crédito.', level: 'media' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'u4-t1', title: 'Chequeo Tema 1', question: 'Si Debe > Haber, el saldo es...', options: ['Acreedor', 'Deudor', 'Nulo siempre'], correctIndex: 1 },
-  { topicId: 'u4-t2', title: 'Chequeo Tema 2', question: 'Las cuentas de resultados se...', options: ['Arrastran siempre', 'Cierran al final del período', 'No se usan'], correctIndex: 1 },
-  { topicId: 'u4-t3', title: 'Chequeo Tema 3', question: 'Los rubros del pasivo se ordenan por...', options: ['Liquidez', 'Exigibilidad', 'Volumen'], correctIndex: 1 },
-  { topicId: 'u4-t4', title: 'Chequeo Tema 4', question: 'Valor recuperable es...', options: ['Mínimo entre VNR y uso', 'Máximo entre VNR y uso', 'Siempre valor histórico'], correctIndex: 1 },
-  { topicId: 'u4-t5', title: 'Chequeo Tema 5', question: 'Jerarquía correcta:', options: ['Rubro > analítica > colectiva', 'Analítica > colectiva > rubro', 'Colectiva > rubro > analítica'], correctIndex: 1 },
-  { topicId: 'u4-t6', title: 'Chequeo Tema 6', question: 'El plan de cuentas debe ser...', options: ['Rígido y cerrado', 'Flexible y ordenado', 'Sin codificación'], correctIndex: 1 },
-  { topicId: 'u4-t7', title: 'Chequeo Tema 7', question: 'El manual aclara principalmente...', options: ['Diseño web', 'Cuándo debitar/acreditar', 'Solo impuestos'], correctIndex: 1 },
-  { topicId: 'u4-t8', title: 'Chequeo Tema 8', question: 'Los componentes implícitos se...', options: ['Ignoran', 'Segregan', 'Capitalizan siempre'], correctIndex: 1 }
 ]
 
 const quizQuestions = [

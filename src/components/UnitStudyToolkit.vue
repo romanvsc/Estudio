@@ -20,18 +20,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -48,43 +36,23 @@
         </button>
       </div>
     </div>
-
-    <StudyFlashcards :cards="flashcards" :unitId="unitId" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz
-        v-for="quiz in topicQuickChecks"
-        :key="quiz.topicId"
-        :title="quiz.title"
-        :topicId="quiz.topicId"
-        :question="quiz.question"
-        :options="quiz.options"
-        :correctIndex="quiz.correctIndex"
-        @answered="handleQuickCheck"
-      />
-    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive } from 'vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
-import StudyFlashcards from './StudyFlashcards.vue'
-import TopicQuickQuiz from './TopicQuickQuiz.vue'
 
 const props = defineProps({
   title: { type: String, default: 'la unidad' },
   unitId: { type: [String, Number], required: true },
   searchQuery: { type: String, default: '' },
   topicMeta: { type: Array, required: true },
-  flashcards: { type: Array, required: true },
-  topicQuickChecks: { type: Array, required: true },
   accent: { type: String, default: 'blue' }
 })
 
-const { getTopicStatus, setTopicStatus, getQuizHistory } = useStudyProgress(props.unitId)
+const { getTopicStatus, setTopicStatus } = useStudyProgress(props.unitId)
 const topicStatus = reactive({})
-const quizAttempts = ref(0)
 
 onMounted(() => {
   refreshProgressState()
@@ -100,13 +68,11 @@ const studySummary = computed(() => {
   const statuses = props.topicMeta.map((topic) => topicStatus[topic.id] || 'pendiente')
   const mastered = statuses.filter((status) => status === 'dominado').length
   const inProgress = statuses.filter((status) => status === 'en-curso').length
-  const rawCompletion = total ? Math.round((mastered / total) * 100) : 0
-  const completion = rawCompletion === 100 && quizAttempts.value === 0 ? 90 : rawCompletion
   return {
     total,
     mastered,
     inProgress,
-    completion
+    completion: total ? Math.round((mastered / total) * 100) : 0
   }
 })
 
@@ -149,11 +115,6 @@ function refreshProgressState() {
   props.topicMeta.forEach((topic) => {
     topicStatus[topic.id] = getTopicStatus(topic.id)
   })
-  quizAttempts.value = getQuizHistory().length
-}
-
-function handleQuickCheck({ topicId, isCorrect }) {
-  setStatus(topicId, isCorrect ? 'dominado' : 'en-curso')
 }
 
 function goToTopic(anchor) {
@@ -173,7 +134,6 @@ function goToTopic(anchor) {
 }
 
 .study-progress-card,
-.summary-card,
 .search-results-card {
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -229,27 +189,6 @@ function goToTopic(anchor) {
   background: var(--accent-blue-soft);
 }
 
-.summary-grid {
-  display: grid;
-  gap: 10px;
-}
-
-.summary-item {
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 8px;
-}
-
-.summary-item ul {
-  margin: 6px 0 0;
-  padding-left: 18px;
-}
-
-.summary-item li {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-}
-
 .search-results-list {
   display: grid;
   gap: 8px;
@@ -271,13 +210,5 @@ function goToTopic(anchor) {
 .search-result-item span {
   color: var(--text-secondary);
   font-size: 0.8rem;
-}
-
-.mini-quiz-grid {
-  margin-top: 12px;
-  margin-bottom: 18px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 10px;
 }
 </style>

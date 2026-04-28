@@ -2,9 +2,9 @@
   <aside class="sidebar" :class="{ open: isOpen }">
     <div class="sidebar-header">
       <div class="logo">
-        <span class="logo-icon">{{ subject === 'sd3' ? '🖥️' : '📚' }}</span>
+        <span class="logo-icon">{{ subjectMeta.icon }}</span>
         <div class="logo-text">
-          <span class="logo-title">{{ subject === 'sd3' ? 'Sistemas de Datos III' : 'Contabilidad' }}</span>
+          <span class="logo-title">{{ subjectMeta.title }}</span>
           <span class="logo-sub">Guía de Estudio</span>
         </div>
       </div>
@@ -17,30 +17,44 @@
         <div v-if="unit.id === 'final'" class="nav-section-sep">
           <span class="nav-label" style="margin: 0">Evaluación</span>
         </div>
-      <button
-        class="nav-item"
-        :class="{ active: currentUnit === unit.id, [`color-${unit.color}`]: true }"
-        @click="$emit('navigate', unit.id)"
-      >
-        <span class="nav-icon">
-          <component :is="unit.icon" :size="20" stroke-width="2" />
-        </span>
-        <div class="nav-content">
-          <span class="nav-number">{{ unit.label || 'Unidad ' + unit.id }}</span>
-          <span class="nav-title">{{ unit.title }}</span>
-        </div>
-        <div class="nav-indicator"></div>
-      </button>
+        <button
+          class="nav-item"
+          :class="{ active: currentUnit === unit.id, [`color-${unit.color}`]: true }"
+          @click="$emit('navigate', unit.id)"
+        >
+          <span class="nav-icon">
+            <component :is="unit.icon" :size="20" stroke-width="2" />
+          </span>
+          <div class="nav-content">
+            <span class="nav-number">{{ unit.label || 'Unidad ' + unit.id }}</span>
+            <span class="nav-title">{{ unit.title }}</span>
+          </div>
+          <div class="nav-indicator"></div>
+        </button>
       </template>
     </nav>
 
+    <div v-if="showTopicList" class="topic-nav">
+      <span class="nav-label">Contenido</span>
+      <div class="topic-list">
+        <button
+          v-for="topic in topics"
+          :key="topic.id"
+          class="topic-item"
+          :class="{ active: currentTopic === topic.id }"
+          @click="$emit('navigate-topic', topic.id)"
+        >
+          <span class="topic-number">{{ topic.number || 'Tema' }}</span>
+          <span class="topic-title">{{ topic.title }}</span>
+        </button>
+      </div>
+    </div>
+
     <div class="sidebar-footer">
       <div class="progress-info">
-        <span class="progress-label">
-          {{ typeof currentUnit === 'number' ? `Unidad ${currentUnit} de 5` : (String(currentUnit).startsWith('final') ? 'Modelo de Final' : 'Dashboard') }}
-        </span>
+        <span class="progress-label">{{ progressLabel }}</span>
         <div class="progress-bar">
-          <div class="progress-fill" :style="{ width: (typeof currentUnit === 'number' ? (currentUnit / 5 * 100) : 100) + '%', background: typeof currentUnit !== 'number' ? 'var(--accent-gold)' : undefined }"></div>
+          <div class="progress-fill" :style="progressStyle"></div>
         </div>
       </div>
     </div>
@@ -48,17 +62,50 @@
 </template>
 
 <script setup>
-import { Building2, ClipboardList, Scale, BarChart3, BookOpen } from 'lucide-vue-next'
 import { computed } from 'vue'
 
 const props = defineProps({
-  units: Array,
+  units: { type: Array, default: () => [] },
+  topics: { type: Array, default: () => [] },
   currentUnit: [Number, String],
+  currentTopic: { type: String, default: '' },
   isOpen: Boolean,
   subject: String
 })
 
-defineEmits(['navigate', 'close'])
+defineEmits(['navigate', 'navigate-topic', 'close'])
+
+const subjectMeta = computed(() => {
+  if (props.subject === 'sd3') {
+    return { icon: '🖥️', title: 'Sistemas de Datos III', totalUnits: 5 }
+  }
+  if (props.subject === 'matfin') {
+    return { icon: '🧮', title: 'Matemática Financiera', totalUnits: 1 }
+  }
+  return { icon: '📚', title: 'Contabilidad', totalUnits: 5 }
+})
+
+const showTopicList = computed(() => {
+  return typeof props.currentUnit === 'number' && props.topics.length > 0
+})
+
+const progressLabel = computed(() => {
+  if (typeof props.currentUnit === 'number') {
+    return `Unidad ${props.currentUnit} de ${subjectMeta.value.totalUnits}`
+  }
+  if (String(props.currentUnit).startsWith('final')) return 'Modelo de Final'
+  if (props.currentUnit === 'dashboard') return 'Dashboard'
+  return 'Materia'
+})
+
+const progressStyle = computed(() => {
+  if (typeof props.currentUnit !== 'number') {
+    return { width: '100%', background: 'var(--accent-gold)' }
+  }
+
+  const ratio = Math.min(1, props.currentUnit / subjectMeta.value.totalUnits)
+  return { width: `${Math.round(ratio * 100)}%` }
+})
 </script>
 
 <style scoped>
@@ -265,6 +312,57 @@ defineEmits(['navigate', 'close'])
   padding-top: 12px;
   border-top: var(--border-width) solid var(--border-color);
   padding: 12px 8px 0;
+}
+
+.topic-nav {
+  border-top: var(--border-width-thick) solid var(--border-color);
+  padding: 12px;
+  background: var(--bg-tertiary);
+}
+
+.topic-list {
+  display: grid;
+  gap: 6px;
+}
+
+.topic-item {
+  border: var(--border-width) solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  padding: 8px 10px;
+  font-family: inherit;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.topic-item:hover {
+  border-color: var(--accent-blue);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--border-color);
+}
+
+.topic-item.active {
+  background: var(--accent-blue-soft);
+  border-color: var(--accent-blue);
+}
+
+.topic-number {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.topic-title {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .sidebar-footer {

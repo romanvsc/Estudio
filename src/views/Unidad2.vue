@@ -11,8 +11,6 @@
       unitId="2"
       :searchQuery="props.searchQuery"
       :topicMeta="topicMeta"
-      :flashcards="flashcards"
-      :topicQuickChecks="topicQuickChecks"
       accent="teal"
     />
 
@@ -225,23 +223,6 @@ const topicMeta = [
   { id: 'u2-t4', anchor: 'u2-t4', number: 'Tema 4', title: 'Comprobantes', keywords: ['comprobantes', 'factura', 'cae', 'afip'], summary: ['Respaldan operaciones comerciales.', 'Deben cumplir requisitos formales.', 'No todo documento es comprobante válido.'] },
   { id: 'u2-t5', anchor: 'u2-t5', number: 'Tema 5', title: 'Conservación documental', keywords: ['conservación', 'archivo', '10 años'], summary: ['Documentación mínima por 10 años.', 'El plazo depende del documento.', 'Se admiten medios alternativos autorizados.'] },
   { id: 'u2-t6', anchor: 'u2-t6', number: 'Tema 6', title: 'Documentación respaldatoria', keywords: ['recibo', 'remito', 'nota de débito', 'pagaré'], summary: ['Cada documento cumple función distinta.', 'No todos modifican patrimonio.', 'La clasificación mejora el control contable.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué incluye la cuota del monotributo?', answer: 'IVA, Ganancias, aportes jubilatorios y obra social.', level: 'fácil' },
-  { question: '¿Qué diferencia principal tiene el régimen general?', answer: 'Liquida IVA y Ganancias por separado y requiere DDJJ.', level: 'media' },
-  { question: '¿Un remito acredita pago?', answer: 'No. Acredita entrega; para pago se usa recibo.', level: 'fácil' },
-  { question: '¿Qué vigencia mínima de archivo establece la normativa?', answer: '10 años para libros y documentación respaldatoria.', level: 'fácil' },
-  { question: '¿Qué son comprobantes no válidos frecuentes?', answer: 'Presupuestos, notas de pedido y cupones sin requisitos fiscales.', level: 'media' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'u2-t1', title: 'Chequeo Tema 1', question: 'Si el Estado participa con acciones en empresa privada, ¿es?', options: ['Intervención indirecta', 'Directa total', 'Sin intervención'], correctIndex: 0 },
-  { topicId: 'u2-t2', title: 'Chequeo Tema 2', question: 'El monotributo permite máximo...', options: ['3 actividades/unidades', '10 actividades', 'Sin límite'], correctIndex: 0 },
-  { topicId: 'u2-t3', title: 'Chequeo Tema 3', question: 'En régimen general, Ganancias se presenta con...', options: ['DDJJ anual', 'Ticket diario', 'Sin presentación'], correctIndex: 0 },
-  { topicId: 'u2-t4', title: 'Chequeo Tema 4', question: '¿Cuál es comprobante válido AFIP?', options: ['Factura', 'Presupuesto', 'Orden de trabajo'], correctIndex: 0 },
-  { topicId: 'u2-t5', title: 'Chequeo Tema 5', question: 'Plazo mínimo de conservación:', options: ['2 años', '5 años', '10 años'], correctIndex: 2 },
-  { topicId: 'u2-t6', title: 'Chequeo Tema 6', question: '¿El pagaré es?', options: ['Promesa escrita de pago', 'Comprobante no registrable', 'Solo un recibo'], correctIndex: 0 }
 ]
 
 const facturaRows = [

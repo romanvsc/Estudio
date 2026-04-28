@@ -26,18 +26,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -53,21 +41,6 @@
           <span>Coincide con: {{ result.term }}</span>
         </button>
       </div>
-    </div>
-
-    <StudyFlashcards :cards="flashcards" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz
-        v-for="quiz in topicQuickChecks"
-        :key="quiz.topicId"
-        :title="quiz.title"
-        :topicId="quiz.topicId"
-        :question="quiz.question"
-        :options="quiz.options"
-        :correctIndex="quiz.correctIndex"
-        @answered="handleQuickCheck"
-      />
     </div>
 
     <!-- 1. Ente, Persona Física y Jurídica -->
@@ -338,8 +311,6 @@ import Accordion from '../components/Accordion.vue'
 import InfoCard from '../components/InfoCard.vue'
 import ComparisonTable from '../components/ComparisonTable.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
-import StudyFlashcards from '../components/StudyFlashcards.vue'
-import TopicQuickQuiz from '../components/TopicQuickQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
 import { Landmark, RefreshCw, FolderOpen, Factory, Rocket, Coins, Combine, ScrollText, Target } from 'lucide-vue-next'
 
@@ -422,27 +393,6 @@ const topicMeta = [
   }
 ]
 
-const flashcards = [
-  { question: '¿Qué diferencia hay entre persona física y jurídica?', answer: 'La física es un individuo; la jurídica es una entidad con capacidad legal propia.', level: 'fácil' },
-  { question: '¿Qué expresa la ecuación ACTIVO = PASIVO + PN?', answer: 'Muestra origen y aplicación de recursos del ente.', level: 'media' },
-  { question: '¿Cuándo deja de aplicar empresa en marcha?', answer: 'Cuando se decide liquidar o cesar actividades.', level: 'fácil' },
-  { question: '¿Cuál es el máximo de socios en una SRL?', answer: 'Hasta 50 socios.', level: 'fácil' },
-  { question: '¿Qué caracteriza a la SAU?', answer: 'Socio único y capital representado en acciones.', level: 'media' },
-  { question: '¿Por qué Pacioli es un hito?', answer: 'Por la sistematización y difusión impresa de la partida doble en 1494.', level: 'difícil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'u1-t1', title: 'Chequeo Tema 1', question: '¿Qué es un ente para la contabilidad?', options: ['Un propietario', 'El sujeto de la contabilidad', 'Un tipo de impuesto'], correctIndex: 1 },
-  { topicId: 'u1-t2', title: 'Chequeo Tema 2', question: '¿Cuál es una característica organizacional?', options: ['Ausencia de objetivos', 'División del trabajo', 'No tener normas'], correctIndex: 1 },
-  { topicId: 'u1-t3', title: 'Chequeo Tema 3', question: 'Por origen del capital puede ser...', options: ['Pública/privada/mixta', 'Simple/doble', 'Nominal/real'], correctIndex: 0 },
-  { topicId: 'u1-t4', title: 'Chequeo Tema 4', question: '¿Cuántos socios máximo permite SRL?', options: ['10', '50', '100'], correctIndex: 1 },
-  { topicId: 'u1-t5', title: 'Chequeo Tema 5', question: 'Empresa en marcha evalúa continuidad por...', options: ['3 meses', '12 meses', '5 años'], correctIndex: 1 },
-  { topicId: 'u1-t6', title: 'Chequeo Tema 6', question: 'Capital de trabajo sirve para...', options: ['Constitución legal', 'Gastos operativos diarios', 'Comprar acciones'], correctIndex: 1 },
-  { topicId: 'u1-t7', title: 'Chequeo Tema 7', question: 'Como técnica, la contabilidad...', options: ['Registra y procesa operaciones', 'Solo formula leyes', 'No usa procedimientos'], correctIndex: 0 },
-  { topicId: 'u1-t8', title: 'Chequeo Tema 8', question: 'Hito de 1494:', options: ['Código de comercio', 'Publicación de Pacioli', 'Creación de AFIP'], correctIndex: 1 },
-  { topicId: 'u1-t9', title: 'Chequeo Tema 9-11', question: 'Objetivo central de la contabilidad:', options: ['Cumplir trámite', 'Tomar decisiones útiles', 'Reducir personal'], correctIndex: 1 }
-]
-
 const { getTopicStatus, setTopicStatus, getSummary } = useStudyProgress('1')
 const topicStatus = reactive({})
 
@@ -476,10 +426,6 @@ const searchResults = computed(() => {
 function setStatus(topicId, status) {
   topicStatus[topicId] = status
   setTopicStatus(topicId, status)
-}
-
-function handleQuickCheck({ topicId, isCorrect }) {
-  setStatus(topicId, isCorrect ? 'dominado' : 'en-curso')
 }
 
 function goToTopic(anchor) {
@@ -696,7 +642,6 @@ const quizQuestions = [
 }
 
 .study-progress-card,
-.summary-card,
 .search-results-card {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -752,27 +697,6 @@ const quizQuestions = [
   background: var(--accent-blue-soft);
 }
 
-.summary-grid {
-  display: grid;
-  gap: 10px;
-}
-
-.summary-item {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 8px;
-}
-
-.summary-item ul {
-  margin: 6px 0 0;
-  padding-left: 18px;
-}
-
-.summary-item li {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-}
-
 .search-results-list {
   display: grid;
   gap: 8px;
@@ -794,14 +718,6 @@ const quizQuestions = [
 .search-result-item span {
   color: var(--text-secondary);
   font-size: 0.8rem;
-}
-
-.mini-quiz-grid {
-  margin-top: 12px;
-  margin-bottom: 18px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 10px;
 }
 
 @keyframes fadeInUp {

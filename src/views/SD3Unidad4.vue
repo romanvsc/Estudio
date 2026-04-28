@@ -26,18 +26,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -48,12 +36,6 @@
           <span>Coincide con: {{ result.term }}</span>
         </button>
       </div>
-    </div>
-
-    <StudyFlashcards :cards="flashcards" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz v-for="quiz in topicQuickChecks" :key="quiz.topicId" :title="quiz.title" :topicId="quiz.topicId" :question="quiz.question" :options="quiz.options" :correctIndex="quiz.correctIndex" @answered="handleQuickCheck" />
     </div>
 
     <!-- Tema 1: Monoprogramación -->
@@ -240,8 +222,6 @@ import Accordion from '../components/Accordion.vue'
 import InfoCard from '../components/InfoCard.vue'
 import ComparisonTable from '../components/ComparisonTable.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
-import StudyFlashcards from '../components/StudyFlashcards.vue'
-import TopicQuickQuiz from '../components/TopicQuickQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
 import { Monitor, LayoutGrid, ArrowLeftRight, Eye, Layers } from 'lucide-vue-next'
 
@@ -253,23 +233,6 @@ const topicMeta = [
   { id: 'sd3u4-t3', anchor: 'sd3u4-t3', number: 'Tema 3', title: 'Intercambio (Swapping)', keywords: ['swap', 'swap-in', 'swap-out', 'intercambio', 'disco'], summary: ['Mueve procesos completos a disco.', 'Swap-out: RAM → disco.', 'Alto costo por latencia de disco.'] },
   { id: 'sd3u4-t4', anchor: 'sd3u4-t4', number: 'Tema 4', title: 'Memoria Virtual', keywords: ['memoria virtual', 'paginación', 'segmentación', 'MMU', 'TLB', 'fallo de página', 'thrashing', 'LRU', 'FIFO'], summary: ['Espacio lógico > RAM física.', 'Paginación: páginas fijas en marcos.', 'Thrashing: degradación extrema.'] },
   { id: 'sd3u4-t5', anchor: 'sd3u4-t5', number: 'Tema 5', title: 'Segmentación Paginada', keywords: ['segmentación paginada', 'x86', 'combinado'], summary: ['Segmentos lógicos + páginas fijas.', 'Elimina fragmentación externa.', 'Usado en procesadores x86.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué es la fragmentación interna?', answer: 'Espacio desperdiciado dentro de una partición cuando el proceso es más pequeño que la partición asignada.', level: 'fácil' },
-  { question: '¿Qué es la fragmentación externa?', answer: 'Memoria libre dispersa en huecos no contiguos que no pueden albergar un proceso nuevo aunque la suma total sea suficiente.', level: 'fácil' },
-  { question: '¿Qué hace la MMU?', answer: 'Traduce direcciones lógicas (virtuales) generadas por la CPU a direcciones físicas reales en RAM.', level: 'media' },
-  { question: '¿Qué es un fallo de página?', answer: 'Ocurre cuando la CPU intenta acceder a una página que no está cargada en RAM y debe traerla del disco.', level: 'media' },
-  { question: '¿Qué es el thrashing (hiperpaginación)?', answer: 'Situación donde el sistema pasa más tiempo intercambiando páginas con el disco que ejecutando instrucciones.', level: 'difícil' },
-  { question: '¿Qué ventaja tiene la segmentación paginada?', answer: 'Combina la organización lógica de la segmentación con la eficiencia física de la paginación, eliminando la fragmentación externa.', level: 'difícil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'sd3u4-t1', title: 'Chequeo Tema 1', question: 'En monoprogramación, ¿qué pasa durante la E/S?', options: ['La CPU ejecuta otro proceso', 'La CPU queda ociosa', 'Se usa memoria virtual'], correctIndex: 1 },
-  { topicId: 'sd3u4-t2', title: 'Chequeo Tema 2', question: 'Particiones fijas causan fragmentación...', options: ['Externa', 'Interna', 'No causan fragmentación'], correctIndex: 1 },
-  { topicId: 'sd3u4-t3', title: 'Chequeo Tema 3', question: 'Swap-out mueve un proceso de...', options: ['Disco a RAM', 'RAM a disco', 'CPU a RAM'], correctIndex: 1 },
-  { topicId: 'sd3u4-t4', title: 'Chequeo Tema 4', question: 'El TLB es...', options: ['Un algoritmo de reemplazo', 'Una caché de traducciones de páginas', 'Un tipo de memoria virtual'], correctIndex: 1 },
-  { topicId: 'sd3u4-t5', title: 'Chequeo Tema 5', question: 'La segmentación paginada combina...', options: ['RAM y ROM', 'Segmentos lógicos con páginas fijas', 'Particiones fijas y variables'], correctIndex: 1 }
 ]
 
 const { getTopicStatus, setTopicStatus, getSummary } = useStudyProgress('sd3-4')
@@ -288,7 +251,6 @@ const searchResults = computed(() => {
 })
 
 function setStatus(topicId, status) { topicStatus[topicId] = status; setTopicStatus(topicId, status) }
-function handleQuickCheck({ topicId, isCorrect }) { setStatus(topicId, isCorrect ? 'dominado' : 'en-curso') }
 function goToTopic(anchor) { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
 const partitionRows = [
@@ -326,7 +288,7 @@ const quizQuestions = [
 .unit-header h1 { margin-bottom: 8px; }
 .unit-subtitle { color: var(--text-muted); font-size: 0.95rem; }
 .study-toolbar { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
-.study-progress-card, .summary-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
+.study-progress-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .status-grid { display: grid; gap: 8px; }
 .status-row { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -334,13 +296,8 @@ const quizQuestions = [
 .status-actions { display: flex; gap: 6px; }
 .status-btn { border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-secondary); border-radius: 6px; font-size: 0.72rem; padding: 5px 8px; cursor: pointer; }
 .status-btn.active { color: var(--accent-purple); border-color: var(--accent-purple); background: var(--accent-purple-soft); }
-.summary-grid { display: grid; gap: 10px; }
-.summary-item { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; }
-.summary-item ul { margin: 6px 0 0; padding-left: 18px; }
-.summary-item li { color: var(--text-secondary); font-size: 0.8rem; }
 .search-results-list { display: grid; gap: 8px; margin-top: 10px; }
 .search-result-item { border: 1px solid var(--border-color); background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 10px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
 .search-result-item span { color: var(--text-secondary); font-size: 0.8rem; }
-.mini-quiz-grid { margin-top: 12px; margin-bottom: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 </style>

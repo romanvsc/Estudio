@@ -88,6 +88,17 @@ const routes = [
         name: 'SD3Unidad5',
         component: () => import('../views/SD3Unidad5.vue')
     },
+    // ── Matemática Financiera ──
+    {
+        path: '/matfin/dashboard',
+        name: 'MatFinDashboard',
+        component: () => import('../views/MatFinDashboard.vue')
+    },
+    {
+        path: '/matfin/unidad/1',
+        name: 'MatFinUnidad1',
+        component: () => import('../views/MatFinUnidad1.vue')
+    },
     // ── Legacy redirects ──
     { path: '/unidad/:id', redirect: to => `/contabilidad/unidad/${to.params.id}` },
     { path: '/dashboard', redirect: '/contabilidad/dashboard' },

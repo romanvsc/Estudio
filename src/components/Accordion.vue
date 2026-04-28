@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { toggleBookmark, isBookmarked } from '../composables/useStudyProgress'
 import TopicNotes from './TopicNotes.vue'
@@ -88,6 +88,25 @@ const headerStyle = computed(() => {
 function toggle() {
   isOpen.value = !isOpen.value
 }
+
+function openFromHash(hash) {
+  const targetId = (hash || '').replace(/^#/, '')
+  if (!targetId || !props.id || targetId !== props.id) return
+  isOpen.value = true
+
+  nextTick(() => {
+    const el = document.getElementById(props.id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  })
+}
+
+watch(
+  () => route.fullPath,
+  () => openFromHash(route.hash),
+  { immediate: true }
+)
 
 function handleBookmark() {
   toggleBookmark(topicKey.value, { title: props.title, unit: unitId.value, route: route.path })

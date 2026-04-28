@@ -11,8 +11,6 @@
       unitId="3"
       :searchQuery="props.searchQuery"
       :topicMeta="topicMeta"
-      :flashcards="flashcards"
-      :topicQuickChecks="topicQuickChecks"
       accent="amber"
     />
 
@@ -276,26 +274,6 @@ const topicMeta = [
   { id: 'u3-t7', anchor: 'u3-t7', number: 'Tema 7', title: 'Variaciones patrimoniales', keywords: ['permutativas', 'modificativas', 'mixtas'], summary: ['Permutativas no cambian PN.', 'Modificativas sí afectan PN.', 'Mixtas combinan resultados.'] },
   { id: 'u3-t8', anchor: 'u3-t8', number: 'Tema 8', title: 'Partida doble', keywords: ['partida doble', 'debe', 'haber'], summary: ['Debe siempre iguala Haber.', 'Recibe: Debe; entrega: Haber.', 'Mantiene equilibrio contable.'] },
   { id: 'u3-t9', anchor: 'u3-t9', number: 'Tema 9', title: 'Devengado vs percibido', keywords: ['devengado', 'percibido', 'flujo de efectivo'], summary: ['Devengado reconoce al generarse.', 'Percibido reconoce al cobrar/pagar.', 'El devengado es criterio principal.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué mide el Patrimonio Neto?', answer: 'La porción del activo que pertenece a los propietarios: A − P.', level: 'fácil' },
-  { question: '¿Qué agrega la ecuación dinámica?', answer: 'Los resultados del período a la ecuación patrimonial.', level: 'media' },
-  { question: '¿Una variación permutativa cambia el PN?', answer: 'No, solo cambia la composición del activo/pasivo.', level: 'fácil' },
-  { question: '¿Qué exige la partida doble?', answer: 'Que el total del Debe sea igual al total del Haber.', level: 'fácil' },
-  { question: '¿Cuándo se reconoce un ingreso devengado?', answer: 'Cuando se genera la operación, aunque aún no se cobre.', level: 'media' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'u3-t1', title: 'Chequeo Tema 1', question: 'Un banco al analizar balances usa información de tipo...', options: ['Interna', 'Externa', 'No contable'], correctIndex: 1 },
-  { topicId: 'u3-t2', title: 'Chequeo Tema 2', question: '¿Cuál es la fórmula del PN?', options: ['A + P', 'A − P', 'P − A'], correctIndex: 1 },
-  { topicId: 'u3-t3', title: 'Chequeo Tema 3', question: 'Ecuación estática:', options: ['A = P + CS', 'A = P − CS', 'A = CS − P'], correctIndex: 0 },
-  { topicId: 'u3-t4', title: 'Chequeo Tema 4', question: 'Los resultados negativos...', options: ['Aumentan PN', 'Disminuyen PN', 'No afectan PN'], correctIndex: 1 },
-  { topicId: 'u3-t5', title: 'Chequeo Tema 5', question: 'Ecuación dinámica incluye...', options: ['Resultados', 'Solo capital', 'Solo pasivo'], correctIndex: 0 },
-  { topicId: 'u3-t6', title: 'Chequeo Tema 6', question: 'Secuencia correcta del ciclo:', options: ['Cobrar-vender-comprar', 'Comprar-pagar-vender-cobrar', 'Pagar-comprar-cobrar'], correctIndex: 1 },
-  { topicId: 'u3-t7', title: 'Chequeo Tema 7', question: 'Si no cambia PN, la variación es...', options: ['Permutativa', 'Modificativa', 'Mixta'], correctIndex: 0 },
-  { topicId: 'u3-t8', title: 'Chequeo Tema 8', question: 'En partida doble, Debe y Haber...', options: ['Pueden diferir', 'Deben ser iguales', 'Solo aplica en cierres'], correctIndex: 1 },
-  { topicId: 'u3-t9', title: 'Chequeo Tema 9', question: 'Criterio principal de registro:', options: ['Percibido', 'Devengado', 'Caja simple'], correctIndex: 1 }
 ]
 
 const quizQuestions = [

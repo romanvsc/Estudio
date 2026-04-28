@@ -26,18 +26,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -48,12 +36,6 @@
           <span>Coincide con: {{ result.term }}</span>
         </button>
       </div>
-    </div>
-
-    <StudyFlashcards :cards="flashcards" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz v-for="quiz in topicQuickChecks" :key="quiz.topicId" :title="quiz.title" :topicId="quiz.topicId" :question="quiz.question" :options="quiz.options" :correctIndex="quiz.correctIndex" @answered="handleQuickCheck" />
     </div>
 
     <!-- Tema 1: Concepto de Bloqueo Irreversible -->
@@ -199,8 +181,6 @@ import Accordion from '../components/Accordion.vue'
 import InfoCard from '../components/InfoCard.vue'
 import ComparisonTable from '../components/ComparisonTable.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
-import StudyFlashcards from '../components/StudyFlashcards.vue'
-import TopicQuickQuiz from '../components/TopicQuickQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
 import { Ban, Package, AlertTriangle, Search, Shield, ShieldCheck } from 'lucide-vue-next'
 
@@ -213,24 +193,6 @@ const topicMeta = [
   { id: 'sd3u3-t4', anchor: 'sd3u3-t4', number: 'Tema 4', title: 'Detección y Recuperación', keywords: ['detección', 'RAG', 'grafo', 'ciclo', 'rollback', 'terminación', 'recuperación'], summary: ['Grafos con ciclo = deadlock.', 'Matrices para múltiples instancias.', 'Terminar, expropiar o retroceder.'] },
   { id: 'sd3u3-t5', anchor: 'sd3u3-t5', number: 'Tema 5', title: 'Evitación — Algoritmo del Banquero', keywords: ['banquero', 'estado seguro', 'estado inseguro', 'Dijkstra', 'evitación', 'avoidance'], summary: ['Simular antes de conceder.', 'Estado seguro: hay secuencia viable.', 'Requiere conocer demanda máxima.'] },
   { id: 'sd3u3-t6', anchor: 'sd3u3-t6', number: 'Tema 6', title: 'Prevención de Bloqueos', keywords: ['prevención', 'spooling', 'todo o nada', 'orden jerárquico', 'prevention'], summary: ['Eliminar 1 condición de Coffman.', 'Spooling, todo o nada, orden lineal.', 'Cada una tiene limitaciones prácticas.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué es un deadlock?', answer: 'Un estado donde un grupo de procesos espera permanentemente porque cada uno retiene un recurso que otro necesita.', level: 'fácil' },
-  { question: '¿Cuáles son las 4 condiciones de Coffman?', answer: 'Exclusión mutua, retención y espera, sin expropiación y espera circular.', level: 'media' },
-  { question: '¿Qué diferencia hay entre recurso expropiable y no expropiable?', answer: 'El expropiable puede retirarse sin daño (CPU); el no expropiable causa inconsistencia si se retira (impresora).', level: 'fácil' },
-  { question: '¿Qué es el Algoritmo del Banquero?', answer: 'Un algoritmo que simula asignaciones y solo concede recursos si el nuevo estado sigue siendo seguro.', level: 'difícil' },
-  { question: '¿Estado inseguro = deadlock?', answer: 'No. Un estado inseguro significa que podría haber deadlock, pero no es seguro que ocurra.', level: 'media' },
-  { question: '¿Cómo se invalida la espera circular?', answer: 'Imponiendo un orden jerárquico lineal: los procesos solo pueden pedir recursos en orden ascendente.', level: 'difícil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'sd3u3-t1', title: 'Chequeo Tema 1', question: '¿Un deadlock se resuelve solo?', options: ['Sí, eventualmente', 'No, requiere intervención externa', 'Solo si hay pocos procesos'], correctIndex: 1 },
-  { topicId: 'sd3u3-t2', title: 'Chequeo Tema 2', question: 'La CPU es un recurso...', options: ['No expropiable', 'Expropiable', 'Sin clasificación'], correctIndex: 1 },
-  { topicId: 'sd3u3-t3', title: 'Chequeo Tema 3', question: '¿Cuántas condiciones de Coffman deben cumplirse?', options: ['Al menos 2', 'Las 4 simultáneamente', 'Solo 1'], correctIndex: 1 },
-  { topicId: 'sd3u3-t4', title: 'Chequeo Tema 4', question: 'Un ciclo en el RAG indica...', options: ['Un proceso rápido', 'Un deadlock (si hay 1 instancia/recurso)', 'Memoria llena'], correctIndex: 1 },
-  { topicId: 'sd3u3-t5', title: 'Chequeo Tema 5', question: 'El Banquero presta solo si...', options: ['Hay dinero de sobra', 'El estado resultante es seguro', 'Todos los clientes piden a la vez'], correctIndex: 1 },
-  { topicId: 'sd3u3-t6', title: 'Chequeo Tema 6', question: 'La estrategia "todo o nada" ataca la condición de...', options: ['Exclusión mutua', 'Espera circular', 'Retención y espera'], correctIndex: 2 }
 ]
 
 const { getTopicStatus, setTopicStatus, getSummary } = useStudyProgress('sd3-3')
@@ -249,7 +211,6 @@ const searchResults = computed(() => {
 })
 
 function setStatus(topicId, status) { topicStatus[topicId] = status; setTopicStatus(topicId, status) }
-function handleQuickCheck({ topicId, isCorrect }) { setStatus(topicId, isCorrect ? 'dominado' : 'en-curso') }
 function goToTopic(anchor) { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
 const preventionRows = [
@@ -280,7 +241,7 @@ const quizQuestions = [
 .unit-header h1 { margin-bottom: 8px; }
 .unit-subtitle { color: var(--text-muted); font-size: 0.95rem; }
 .study-toolbar { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
-.study-progress-card, .summary-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
+.study-progress-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .status-grid { display: grid; gap: 8px; }
 .status-row { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -288,13 +249,8 @@ const quizQuestions = [
 .status-actions { display: flex; gap: 6px; }
 .status-btn { border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-secondary); border-radius: 6px; font-size: 0.72rem; padding: 5px 8px; cursor: pointer; }
 .status-btn.active { color: var(--accent-amber); border-color: var(--accent-amber); background: var(--accent-amber-soft); }
-.summary-grid { display: grid; gap: 10px; }
-.summary-item { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; }
-.summary-item ul { margin: 6px 0 0; padding-left: 18px; }
-.summary-item li { color: var(--text-secondary); font-size: 0.8rem; }
 .search-results-list { display: grid; gap: 8px; margin-top: 10px; }
 .search-result-item { border: 1px solid var(--border-color); background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 10px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
 .search-result-item span { color: var(--text-secondary); font-size: 0.8rem; }
-.mini-quiz-grid { margin-top: 12px; margin-bottom: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 </style>

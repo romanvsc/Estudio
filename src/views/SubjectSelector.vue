@@ -26,6 +26,16 @@
         </div>
         <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
+
+      <button class="subject-card" @click="$router.push('/matfin/unidad/1')">
+        <div class="subject-icon">📈</div>
+        <div class="subject-info">
+          <h2>Matemática Financiera</h2>
+          <p>Decisiones financieras, tasa de interés, interés simple y compuesto, y operaciones de descuento</p>
+          <span class="subject-units">1 Unidad</span>
+        </div>
+        <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </div>
 </template>

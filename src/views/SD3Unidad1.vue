@@ -26,18 +26,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -53,21 +41,6 @@
           <span>Coincide con: {{ result.term }}</span>
         </button>
       </div>
-    </div>
-
-    <StudyFlashcards :cards="flashcards" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz
-        v-for="quiz in topicQuickChecks"
-        :key="quiz.topicId"
-        :title="quiz.title"
-        :topicId="quiz.topicId"
-        :question="quiz.question"
-        :options="quiz.options"
-        :correctIndex="quiz.correctIndex"
-        @answered="handleQuickCheck"
-      />
     </div>
 
     <!-- Tema 1: Definición y Propósito del SO -->
@@ -235,8 +208,6 @@ import Accordion from '../components/Accordion.vue'
 import InfoCard from '../components/InfoCard.vue'
 import ComparisonTable from '../components/ComparisonTable.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
-import StudyFlashcards from '../components/StudyFlashcards.vue'
-import TopicQuickQuiz from '../components/TopicQuickQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
 import { Monitor, History, Layers, Grid3x3, Blocks } from 'lucide-vue-next'
 
@@ -277,23 +248,6 @@ const topicMeta = [
   }
 ]
 
-const flashcards = [
-  { question: '¿Qué es un sistema operativo?', answer: 'Un conjunto de programas intermediarios entre el hardware y el usuario que gestionan recursos y ofrecen una interfaz simplificada.', level: 'fácil' },
-  { question: '¿Qué innovación trajo la 3ª generación?', answer: 'La multiprogramación y el tiempo compartido, permitiendo varios programas en memoria simultáneamente.', level: 'media' },
-  { question: '¿Cuáles son los 5 gestores del SO?', answer: 'Gestor de procesos, de memoria, de E/S, de archivos y de permisos/seguridad.', level: 'fácil' },
-  { question: '¿Qué diferencia hay entre monolítico y microkernel?', answer: 'Monolítico integra todo en un binario en modo núcleo; microkernel mantiene un núcleo mínimo y los servicios como procesos de usuario.', level: 'difícil' },
-  { question: '¿Qué es un SO de tiempo real?', answer: 'Uno que garantiza respuestas dentro de plazos críticos estrictos, como en control de vuelo.', level: 'media' },
-  { question: '¿Qué fue el GM-NAA I/O?', answer: 'El primer sistema operativo (1956), diseñado para automatizar la carga de trabajos en mainframes IBM.', level: 'difícil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'sd3u1-t1', title: 'Chequeo Tema 1', question: '¿Cuál es la función principal del SO?', options: ['Ejecutar juegos', 'Gestionar recursos y ocultar complejidad del hardware', 'Compilar código fuente'], correctIndex: 1 },
-  { topicId: 'sd3u1-t2', title: 'Chequeo Tema 2', question: '¿En qué generación aparece la multiprogramación?', options: ['1ª Generación', '2ª Generación', '3ª Generación'], correctIndex: 2 },
-  { topicId: 'sd3u1-t3', title: 'Chequeo Tema 3', question: '¿Qué gestor controla la comunicación con periféricos?', options: ['Gestor de procesos', 'Gestor de E/S', 'Gestor de archivos'], correctIndex: 1 },
-  { topicId: 'sd3u1-t4', title: 'Chequeo Tema 4', question: 'Un SO que permite varios programas simultáneos es...', options: ['Monotarea', 'Multitarea', 'Monousuario'], correctIndex: 1 },
-  { topicId: 'sd3u1-t5', title: 'Chequeo Tema 5', question: 'Linux tiene una estructura...', options: ['Microkernel', 'Por capas', 'Monolítica'], correctIndex: 2 }
-]
-
 const { getTopicStatus, setTopicStatus, getSummary } = useStudyProgress('sd3-1')
 const topicStatus = reactive({})
 
@@ -321,10 +275,6 @@ const searchResults = computed(() => {
 function setStatus(topicId, status) {
   topicStatus[topicId] = status
   setTopicStatus(topicId, status)
-}
-
-function handleQuickCheck({ topicId, isCorrect }) {
-  setStatus(topicId, isCorrect ? 'dominado' : 'en-curso')
 }
 
 function goToTopic(anchor) {
@@ -417,7 +367,7 @@ const quizQuestions = [
 .unit-header h1 { margin-bottom: 8px; }
 .unit-subtitle { color: var(--text-muted); font-size: 0.95rem; }
 .study-toolbar { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
-.study-progress-card, .summary-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
+.study-progress-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .status-grid { display: grid; gap: 8px; }
 .status-row { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -425,13 +375,8 @@ const quizQuestions = [
 .status-actions { display: flex; gap: 6px; }
 .status-btn { border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-secondary); border-radius: 6px; font-size: 0.72rem; padding: 5px 8px; cursor: pointer; }
 .status-btn.active { color: var(--accent-blue); border-color: var(--accent-blue); background: var(--accent-blue-soft); }
-.summary-grid { display: grid; gap: 10px; }
-.summary-item { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; }
-.summary-item ul { margin: 6px 0 0; padding-left: 18px; }
-.summary-item li { color: var(--text-secondary); font-size: 0.8rem; }
 .search-results-list { display: grid; gap: 8px; margin-top: 10px; }
 .search-result-item { border: 1px solid var(--border-color); background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 10px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
 .search-result-item span { color: var(--text-secondary); font-size: 0.8rem; }
-.mini-quiz-grid { margin-top: 12px; margin-bottom: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 </style>

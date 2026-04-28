@@ -11,8 +11,6 @@
       unitId="5"
       :searchQuery="props.searchQuery"
       :topicMeta="topicMeta"
-      :flashcards="flashcards"
-      :topicQuickChecks="topicQuickChecks"
       accent="red"
     />
 
@@ -358,23 +356,6 @@ const topicMeta = [
   { id: 'u5-t4', anchor: 'u5-t4', number: 'Tema 4', title: 'Orden de uso de libros', keywords: ['orden de uso', 'mayorización', 'subdiarios', 'submayores'], summary: ['El proceso va de comprobante a informe.', 'Diario alimenta Mayor y auxiliares.', 'Luego se elaboran estados contables.'] },
   { id: 'u5-t5', anchor: 'u5-t5', number: 'Tema 5', title: 'Medios de registración', keywords: ['manual', 'mecánico', 'electrónico'], summary: ['Manual: lento y en desuso.', 'Mecánico: transición histórica.', 'Electrónico: rápido, integrado y trazable.'] },
   { id: 'u5-t6', anchor: 'u5-t6', number: 'Tema 6', title: 'Ejemplos de registración', keywords: ['asiento', 'partida doble', 'constitución', 'compras', 'ventas'], summary: ['Los asientos reflejan hechos económicos.', 'Debe y Haber deben equilibrar.', 'Permiten control y toma de decisiones.'] }
-]
-
-const flashcards = [
-  { question: '¿Qué artículo del CCC obliga a llevar contabilidad?', answer: 'El artículo 320.', level: 'fácil' },
-  { question: '¿Cuál es el libro de primera entrada?', answer: 'El Libro Diario.', level: 'fácil' },
-  { question: '¿Por qué los libros tienen valor legal?', answer: 'Porque sirven como prueba si cumplen requisitos formales.', level: 'media' },
-  { question: '¿Qué ventaja central tiene la registración electrónica?', answer: 'Automatización, velocidad y almacenamiento integrado.', level: 'fácil' },
-  { question: '¿Qué regla nunca debe romper un asiento?', answer: 'La igualdad entre débitos y créditos.', level: 'fácil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'u5-t1', title: 'Chequeo Tema 1', question: '¿Qué norma técnica emite FACPCE?', options: ['Resoluciones Técnicas', 'Ordenanzas municipales', 'Sentencias'], correctIndex: 0 },
-  { topicId: 'u5-t2', title: 'Chequeo Tema 2', question: 'Obligados a llevar libros:', options: ['Solo SA', 'Personas jurídicas y actividad organizada', 'Solo monotributistas'], correctIndex: 1 },
-  { topicId: 'u5-t3', title: 'Chequeo Tema 3', question: 'Libro cronológico de operaciones:', options: ['Mayor', 'Inventarios', 'Diario'], correctIndex: 2 },
-  { topicId: 'u5-t4', title: 'Chequeo Tema 4', question: 'Mayorización significa:', options: ['Pasar del Diario al Mayor', 'Cerrar caja', 'Rubricar libros'], correctIndex: 0 },
-  { topicId: 'u5-t5', title: 'Chequeo Tema 5', question: 'Medio más avanzado de registración:', options: ['Manual', 'Electrónico', 'Mecánico'], correctIndex: 1 },
-  { topicId: 'u5-t6', title: 'Chequeo Tema 6', question: 'Principio de partida doble:', options: ['Debe = Haber', 'Activo = Pasivo', 'Caja = Banco'], correctIndex: 0 }
 ]
 
 const quizQuestions = [

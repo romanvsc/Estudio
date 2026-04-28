@@ -26,18 +26,6 @@
           </div>
         </div>
       </div>
-
-      <div class="summary-card">
-        <h3>Resumen de 1 minuto</h3>
-        <div class="summary-grid">
-          <div v-for="topic in topicMeta" :key="`${topic.id}-summary`" class="summary-item">
-            <strong>{{ topic.number }} · {{ topic.title }}</strong>
-            <ul>
-              <li v-for="point in topic.summary" :key="point">{{ point }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div v-if="searchResults.length" class="search-results-card">
@@ -48,12 +36,6 @@
           <span>Coincide con: {{ result.term }}</span>
         </button>
       </div>
-    </div>
-
-    <StudyFlashcards :cards="flashcards" />
-
-    <div class="mini-quiz-grid">
-      <TopicQuickQuiz v-for="quiz in topicQuickChecks" :key="quiz.topicId" :title="quiz.title" :topicId="quiz.topicId" :question="quiz.question" :options="quiz.options" :correctIndex="quiz.correctIndex" @answered="handleQuickCheck" />
     </div>
 
     <!-- Tema 1: Concepto y Propiedades de Archivos -->
@@ -230,8 +212,6 @@ import Accordion from '../components/Accordion.vue'
 import InfoCard from '../components/InfoCard.vue'
 import ComparisonTable from '../components/ComparisonTable.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
-import StudyFlashcards from '../components/StudyFlashcards.vue'
-import TopicQuickQuiz from '../components/TopicQuickQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
 import { File as FileIcon, FolderTree, HardDrive, Database } from 'lucide-vue-next'
 
@@ -242,22 +222,6 @@ const topicMeta = [
   { id: 'sd3u5-t2', anchor: 'sd3u5-t2', number: 'Tema 2', title: 'Estructuras de Directorios', keywords: ['directorio', 'jerárquico', 'árbol', 'grafo', 'enlace', 'link', 'ruta', 'path', 'raíz'], summary: ['De un nivel a grafos generales.', 'Jerárquico en árbol es el estándar.', 'Rutas absolutas y relativas.'] },
   { id: 'sd3u5-t3', anchor: 'sd3u5-t3', number: 'Tema 3', title: 'Implementación del SA', keywords: ['superbloque', 'FCB', 'VFS', 'semántica', 'consistencia', 'montaje', 'bloqueo'], summary: ['Superbloque + FCB/inodes en disco.', 'VFS: interfaz uniforme.', 'Semántica UNIX vs. sesión.'] },
   { id: 'sd3u5-t4', anchor: 'sd3u5-t4', number: 'Tema 4', title: 'Asignación y Espacio Libre', keywords: ['contigua', 'ligada', 'indexada', 'inodes', 'bitmap', 'ext4', 'mapa de bits', 'espacio libre'], summary: ['Contigua: rápida pero rígida.', 'Ligada: flexible, solo secuencial.', 'Indexada: acceso directo (ext4).'] }
-]
-
-const flashcards = [
-  { question: '¿Qué es un archivo?', answer: 'Una unidad lógica de almacenamiento que abstrae los detalles físicos del disco y persiste independientemente del proceso que lo creó.', level: 'fácil' },
-  { question: '¿Cuáles son los 3 métodos de acceso a archivos?', answer: 'Secuencial (en orden), directo/aleatorio (por número de bloque) e indexado (con índice de punteros).', level: 'fácil' },
-  { question: '¿Qué tipo de estructura de directorios usa el modelo moderno?', answer: 'Jerárquica en árbol, con subdirectorios desde una raíz (root).', level: 'media' },
-  { question: '¿Qué es el VFS?', answer: 'Virtual File System: capa que permite al SO manejar múltiples tipos de sistema de archivos de forma uniforme.', level: 'difícil' },
-  { question: '¿Qué desventaja tiene la asignación contigua?', answer: 'Sufre fragmentación externa y es difícil que el archivo crezca (necesita bloques adyacentes).', level: 'media' },
-  { question: '¿Cómo funciona un mapa de bits para espacio libre?', answer: 'Un bit por bloque del disco: 1=libre, 0=ocupado. Es eficiente para encontrar bloques contiguos.', level: 'difícil' }
-]
-
-const topicQuickChecks = [
-  { topicId: 'sd3u5-t1', title: 'Chequeo Tema 1', question: 'En UNIX, un archivo es una...', options: ['Secuencia de registros', 'Secuencia de bytes', 'Árbol de registros'], correctIndex: 1 },
-  { topicId: 'sd3u5-t2', title: 'Chequeo Tema 2', question: 'El modelo moderno de directorios es...', options: ['Un solo nivel', 'Jerárquico en árbol', 'Grafo general'], correctIndex: 1 },
-  { topicId: 'sd3u5-t3', title: 'Chequeo Tema 3', question: 'El superbloque contiene...', options: ['Los datos del usuario', 'Parámetros del volumen del SA', 'Solo el nombre del disco'], correctIndex: 1 },
-  { topicId: 'sd3u5-t4', title: 'Chequeo Tema 4', question: 'La asignación indexada permite acceso...', options: ['Solo secuencial', 'Directo (aleatorio)', 'Solo por extensión'], correctIndex: 1 }
 ]
 
 const { getTopicStatus, setTopicStatus, getSummary } = useStudyProgress('sd3-5')
@@ -276,7 +240,6 @@ const searchResults = computed(() => {
 })
 
 function setStatus(topicId, status) { topicStatus[topicId] = status; setTopicStatus(topicId, status) }
-function handleQuickCheck({ topicId, isCorrect }) { setStatus(topicId, isCorrect ? 'dominado' : 'en-curso') }
 function goToTopic(anchor) { const el = document.getElementById(anchor); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
 const allocationRows = [
@@ -308,7 +271,7 @@ const quizQuestions = [
 .unit-header h1 { margin-bottom: 8px; }
 .unit-subtitle { color: var(--text-muted); font-size: 0.95rem; }
 .study-toolbar { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
-.study-progress-card, .summary-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
+.study-progress-card, .search-results-card { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 14px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .status-grid { display: grid; gap: 8px; }
 .status-row { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -316,13 +279,8 @@ const quizQuestions = [
 .status-actions { display: flex; gap: 6px; }
 .status-btn { border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-secondary); border-radius: 6px; font-size: 0.72rem; padding: 5px 8px; cursor: pointer; }
 .status-btn.active { color: var(--accent-red); border-color: var(--accent-red); background: var(--accent-red-soft); }
-.summary-grid { display: grid; gap: 10px; }
-.summary-item { border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; }
-.summary-item ul { margin: 6px 0 0; padding-left: 18px; }
-.summary-item li { color: var(--text-secondary); font-size: 0.8rem; }
 .search-results-list { display: grid; gap: 8px; margin-top: 10px; }
 .search-result-item { border: 1px solid var(--border-color); background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 10px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
 .search-result-item span { color: var(--text-secondary); font-size: 0.8rem; }
-.mini-quiz-grid { margin-top: 12px; margin-bottom: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 </style>
