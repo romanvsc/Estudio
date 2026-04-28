@@ -96,13 +96,13 @@
     </Accordion>
 
     <Accordion id="mfu1-t4" title="Interés Simple" :icon="TrendingUp" number="Tema 4" color="teal">
-      <div class="formula-block">
+      <div class="formula-block" data-formula-set="Interes simple">
         <p>I = C x i x n</p>
         <p>Cf = C + I = C(1 + i x n)</p>
       </div>
       <div class="section-block">
         <h4>Despejes frecuentes</h4>
-        <ul class="list-styled">
+        <ul class="list-styled formula-list">
           <li>C = I / (i x n)</li>
           <li>i = I / (C x n)</li>
           <li>n = I / (C x i)</li>
@@ -115,7 +115,7 @@
     </Accordion>
 
     <Accordion id="mfu1-t5" title="Interés Compuesto" :icon="BarChart3" number="Tema 5" color="teal">
-      <div class="formula-block">
+      <div class="formula-block" data-formula-set="Interes compuesto">
         <p>Cf = C(1 + i)^n</p>
         <p>C = Cf / (1 + i)^n</p>
         <p>i = (Cf / C)^(1/n) - 1</p>
@@ -132,7 +132,7 @@
       </InfoCard>
       <div class="section-block">
         <h4>Fórmulas de descuento simple</h4>
-        <div class="formula-block compact">
+        <div class="formula-block compact" data-formula-set="Descuento simple">
           <p>V = Cn - D</p>
           <p>V = Cn(1 - n x d)</p>
           <p>D = Cn x d x n</p>
@@ -140,7 +140,7 @@
       </div>
       <div class="section-block">
         <h4>Fórmulas de descuento compuesto</h4>
-        <div class="formula-block compact">
+        <div class="formula-block compact" data-formula-set="Descuento compuesto">
           <p>V = Cn(1 - d)^n</p>
           <p>d = 1 - (V / Cn)^(1/n)</p>
           <p>Cn = V / (1 - d)^n</p>
@@ -151,7 +151,7 @@
     <Accordion id="mfu1-t7" title="Equivalencia de Tasas y Puntos Porcentuales" :icon="Scale" number="Tema 7" color="teal">
       <div class="section-block">
         <h4>Equivalencia interés-descuento</h4>
-        <div class="formula-block compact">
+        <div class="formula-block compact" data-formula-set="Equivalencia de tasas">
           <p>d = i / (1 + i)</p>
           <p>i = d / (1 - d)</p>
         </div>
@@ -445,25 +445,112 @@ const quizQuestions = [
 }
 
 .formula-block {
+  position: relative;
+  border: 2px solid var(--accent-teal);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-teal) 16%, transparent), transparent 56%),
+    var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 14px 12px;
+  margin: 12px 0;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.formula-block::before {
+  content: attr(data-formula-set);
+  position: absolute;
+  top: 0;
+  right: 12px;
+  transform: translateY(-50%);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--bg-tertiary);
-  padding: 10px 12px;
-  margin: 10px 0;
+  border-radius: 999px;
+  background: var(--accent-teal);
+  color: #063327;
+  padding: 2px 10px;
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.formula-block::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  right: -40px;
+  bottom: -62px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent-teal) 16%, transparent);
+  pointer-events: none;
+}
+
+.formula-block:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--border-color);
 }
 
 .formula-block p {
   margin: 0;
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.9rem;
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--accent-teal) 55%, var(--border-color));
+  border-radius: 8px;
+  padding: 7px 10px;
 }
 
 .formula-block p + p {
-  margin-top: 4px;
+  margin-top: 8px;
+}
+
+.formula-block.compact {
+  padding-top: 16px;
 }
 
 .formula-block.compact p {
-  font-size: 0.84rem;
+  font-size: 0.88rem;
+  padding: 6px 9px;
+}
+
+.formula-list {
+  padding-left: 0;
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.formula-list li {
+  list-style: none;
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--accent-teal) 12%, var(--bg-card));
+  border: 1px solid color-mix(in srgb, var(--accent-teal) 52%, var(--border-color));
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.formula-list li::before {
+  content: 'f';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  border-radius: 999px;
+  background: var(--accent-teal);
+  color: #063327;
+  font-size: 0.68rem;
+  font-weight: 800;
 }
 
 @keyframes fadeInUp {
@@ -481,6 +568,23 @@ const quizQuestions = [
   .status-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .formula-block {
+    padding: 16px 10px 10px;
+  }
+
+  .formula-block::before {
+    right: 8px;
+    font-size: 0.56rem;
+  }
+
+  .formula-block p {
+    font-size: 0.88rem;
+  }
+
+  .formula-list li {
+    font-size: 0.84rem;
   }
 }
 </style>

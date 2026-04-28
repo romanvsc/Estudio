@@ -75,13 +75,11 @@
         <p>Es la <strong>inversión inicial</strong> que han realizado los propietarios de la empresa. Es una fuente de financiación propia.</p>
       </InfoCard>
       <InfoCard type="important" label="Igualdad Patrimonial Estática">
-        <p style="font-size: 1.1rem; text-align: center; font-weight: 600; letter-spacing: 0.02em;">
-          ACTIVO = PASIVO + CAPITAL SOCIAL
-        </p>
+        <p class="equation-banner">ACTIVO = PASIVO + CAPITAL SOCIAL</p>
       </InfoCard>
       <InfoCard type="example" label="Ejemplo">
         <p>Si una empresa necesita $100.000 para funcionar: socios aportan $60.000 (Capital) y se obtienen $40.000 de un préstamo (Pasivo):</p>
-        <p style="text-align: center;"><strong>$100.000 (A) = $40.000 (P) + $60.000 (CS)</strong></p>
+        <p class="equation-banner equation-banner-compact"><strong>$100.000 (A) = $40.000 (P) + $60.000 (CS)</strong></p>
       </InfoCard>
     </Accordion>
 
@@ -117,9 +115,7 @@
     <!-- 5. Ecuación Dinámica -->
     <Accordion id="u3-t5" title="Ecuación Contable Dinámica" :icon="RefreshCcw" number="Tema 5" color="amber">
       <InfoCard type="important" label="Ecuación Dinámica">
-        <p style="font-size: 1.1rem; text-align: center; font-weight: 600;">
-          ACTIVO = PASIVO + CAPITAL ± RESULTADOS
-        </p>
+        <p class="equation-banner">ACTIVO = PASIVO + CAPITAL ± RESULTADOS</p>
       </InfoCard>
       <div class="section-block">
         <p>La igualdad dinámica es una extensión de la ecuación estática que incorpora los resultados. A medida que se desarrollan operaciones comerciales, esta igualdad se modifica.</p>
@@ -392,6 +388,29 @@ const quizQuestions = [
   font-size: 0.95rem;
 }
 
+.equation-banner {
+  margin: 0;
+  padding: 8px 14px;
+  border: 2px solid var(--accent-amber);
+  border-radius: 999px;
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--accent-amber) 18%, transparent), transparent 68%),
+    var(--bg-card);
+  box-shadow: 3px 3px 0 var(--border-color);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.equation-banner-compact {
+  margin-top: 8px;
+  border-style: dashed;
+  font-size: 0.88rem;
+}
+
 /* Cycle Diagram */
 .cycle-diagram {
   display: flex;
@@ -443,5 +462,16 @@ const quizQuestions = [
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .equation-banner {
+    border-radius: 12px;
+    font-size: 0.82rem;
+  }
+
+  .equation-banner-compact {
+    font-size: 0.78rem;
+  }
 }
 </style>

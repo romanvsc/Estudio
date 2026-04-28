@@ -547,6 +547,21 @@ const quizQuestions = [
   opacity: 0.6;
 }
 
+.exam-question code {
+  display: inline-block;
+  margin: 0 2px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-amber);
+  background: color-mix(in srgb, var(--accent-amber) 16%, var(--bg-card));
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 2px 2px 0 var(--border-color);
+}
+
 .opt-letter {
   flex-shrink: 0;
   width: 22px;
@@ -637,5 +652,11 @@ const quizQuestions = [
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .exam-question code {
+    font-size: 0.74rem;
+  }
 }
 </style>

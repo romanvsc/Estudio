@@ -676,23 +676,68 @@ defineProps({
 }
 
 .equation-proof {
+  position: relative;
+  border: 2px solid var(--accent-teal);
+  border-radius: var(--radius-md);
+  padding: 16px 14px 12px;
+  background:
+    linear-gradient(140deg, color-mix(in srgb, var(--accent-teal) 14%, transparent), transparent 62%),
+    var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.equation-proof::before {
+  content: 'Comprobacion';
+  position: absolute;
+  top: 0;
+  right: 10px;
+  transform: translateY(-50%);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  background: var(--bg-card);
+  border-radius: 999px;
+  background: var(--accent-teal);
+  color: #063327;
+  padding: 2px 10px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.equation-proof::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  right: -30px;
+  bottom: -52px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent-teal) 14%, transparent);
+  pointer-events: none;
 }
 
 .equation-proof h4 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .equation-proof p {
   margin: 0;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.45;
+  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--accent-teal) 50%, var(--border-color));
+  border-radius: 8px;
+  padding: 7px 10px;
 }
 
 .equation-proof p + p {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .category-major {
@@ -748,6 +793,19 @@ defineProps({
 @media (max-width: 768px) {
   .entry-line code {
     font-size: 0.8rem;
+  }
+
+  .equation-proof {
+    padding: 14px 10px 10px;
+  }
+
+  .equation-proof::before {
+    right: 8px;
+    font-size: 0.55rem;
+  }
+
+  .equation-proof p {
+    font-size: 0.82rem;
   }
 
   .summary-grid {
