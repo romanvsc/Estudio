@@ -110,7 +110,9 @@ const sd3Units = [
 
 const matfinUnits = [
   { id: 'dashboard', title: 'Panel General', icon: markRaw(LayoutDashboard), color: 'blue', label: 'Dashboard', path: '/matfin/dashboard' },
-  { id: 1, title: 'Fundamentos y Cálculo Financiero', icon: markRaw(Calculator), color: 'teal' }
+  { id: 1, title: 'Fundamentos y cálculo financiero', icon: markRaw(Calculator), color: 'teal' },
+  { id: 2, title: 'Equivalencia financiera y tasas', icon: markRaw(Scale), color: 'amber' },
+  { id: 3, title: 'Rentas', icon: markRaw(BarChart3), color: 'purple' }
 ]
 
 const topicCatalog = {
@@ -210,6 +212,21 @@ const topicCatalog = {
       { id: 'mfu1-t5', number: 'Tema 5', title: 'Interés compuesto' },
       { id: 'mfu1-t6', number: 'Tema 6', title: 'Descuento simple y compuesto' },
       { id: 'mfu1-t7', number: 'Tema 7', title: 'Equivalencia de tasas' }
+    ],
+    2: [
+      { id: 'mfu2-t1', number: 'Tema 1', title: 'Equivalencia financiera de capitales' },
+      { id: 'mfu2-t2', number: 'Tema 2', title: 'Equivalencia en régimen simple' },
+      { id: 'mfu2-t3', number: 'Tema 3', title: 'Equivalencia en régimen compuesto' },
+      { id: 'mfu2-t4', number: 'Tema 4', title: 'TNA, TEA y frecuencia de capitalización' },
+      { id: 'mfu2-t5', number: 'Tema 5', title: 'Tasas efectivas equivalentes' },
+      { id: 'mfu2-t6', number: 'Tema 6', title: 'Capitalización continua' }
+    ],
+    3: [
+      { id: 'mfu3-t1', number: 'Tema 1', title: 'Concepto y clasificación de rentas' },
+      { id: 'mfu3-t2', number: 'Tema 2', title: 'Valor actual de rentas vencidas' },
+      { id: 'mfu3-t3', number: 'Tema 3', title: 'Rentas adelantadas y diferidas' },
+      { id: 'mfu3-t4', number: 'Tema 4', title: 'Imposiciones y valor final' },
+      { id: 'mfu3-t5', number: 'Tema 5', title: 'Rentas perpetuas' }
     ]
   }
 }
@@ -435,7 +452,7 @@ onUnmounted(() => {
 .content-area {
   flex: 1;
   padding: 32px 40px 64px;
-  max-width: 960px;
+  max-width: 1180px;
   width: 100%;
   margin: 0 auto;
   position: relative;

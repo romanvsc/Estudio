@@ -80,7 +80,7 @@ const subjectMeta = computed(() => {
     return { icon: '🖥️', title: 'Sistemas de Datos III', totalUnits: 5 }
   }
   if (props.subject === 'matfin') {
-    return { icon: '🧮', title: 'Matemática Financiera', totalUnits: 1 }
+    return { icon: '🧮', title: 'Matemática Financiera', totalUnits: 3 }
   }
   return { icon: '📚', title: 'Contabilidad', totalUnits: 5 }
 })
@@ -184,19 +184,19 @@ const progressStyle = computed(() => {
 
 .nav-list {
   flex: 1;
-  padding: 16px 12px;
+  padding: 18px 14px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .nav-label {
   font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--text-muted);
-  padding: 0 8px;
+  padding: 0 10px;
   margin-bottom: 8px;
 }
 
@@ -204,10 +204,10 @@ const progressStyle = computed(() => {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
-  border: var(--border-width-thick) solid transparent;
+  padding: 12px 14px;
+  border: var(--border-width) solid transparent;
   background: transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   text-align: left;
   transition: all var(--transition-fast);
@@ -234,7 +234,7 @@ const progressStyle = computed(() => {
   justify-content: center;
   border-radius: var(--radius-sm);
   background: var(--bg-tertiary);
-  border: var(--border-width-thick) solid var(--border-color);
+  border: var(--border-width) solid var(--border-color);
   transition: all var(--transition-fast);
 }
 
@@ -242,6 +242,7 @@ const progressStyle = computed(() => {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  gap: 1px;
 }
 
 .nav-number {
@@ -255,9 +256,9 @@ const progressStyle = computed(() => {
 .nav-title {
   font-size: 0.82rem;
   font-weight: 600;
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.25;
 }
 
 .nav-indicator {

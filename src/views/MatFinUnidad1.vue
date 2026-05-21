@@ -96,10 +96,7 @@
     </Accordion>
 
     <Accordion id="mfu1-t4" title="Interés Simple" :icon="TrendingUp" number="Tema 4" color="teal">
-      <div class="formula-block" data-formula-set="Interes simple">
-        <p>I = C x i x n</p>
-        <p>Cf = C + I = C(1 + i x n)</p>
-      </div>
+      <FormulaBlock title="Interés simple" :formulas="simpleInterestFormulas" />
       <div class="section-block">
         <h4>Despejes frecuentes</h4>
         <ul class="list-styled formula-list">
@@ -115,15 +112,13 @@
     </Accordion>
 
     <Accordion id="mfu1-t5" title="Interés Compuesto" :icon="BarChart3" number="Tema 5" color="teal">
-      <div class="formula-block" data-formula-set="Interes compuesto">
-        <p>Cf = C(1 + i)^n</p>
-        <p>C = Cf / (1 + i)^n</p>
-        <p>i = (Cf / C)^(1/n) - 1</p>
-        <p>n = (log Cf - log C) / log(1 + i)</p>
+      <div class="learning-grid">
+        <FormulaBlock title="Interés compuesto" :formulas="compoundInterestFormulas" />
+        <InfoCard type="important" label="Clave conceptual">
+          <p>En régimen compuesto, los intereses se capitalizan.</p>
+          <p>Por eso el crecimiento del capital es exponencial.</p>
+        </InfoCard>
       </div>
-      <InfoCard type="important" label="Clave conceptual">
-        <p>En régimen compuesto los intereses se capitalizan, por eso el crecimiento del capital es exponencial.</p>
-      </InfoCard>
     </Accordion>
 
     <Accordion id="mfu1-t6" title="Descuento Simple y Compuesto" :icon="ArrowDownCircle" number="Tema 6" color="teal">
@@ -132,29 +127,18 @@
       </InfoCard>
       <div class="section-block">
         <h4>Fórmulas de descuento simple</h4>
-        <div class="formula-block compact" data-formula-set="Descuento simple">
-          <p>V = Cn - D</p>
-          <p>V = Cn(1 - n x d)</p>
-          <p>D = Cn x d x n</p>
-        </div>
+        <FormulaBlock title="Descuento simple" :formulas="simpleDiscountFormulas" compact />
       </div>
       <div class="section-block">
         <h4>Fórmulas de descuento compuesto</h4>
-        <div class="formula-block compact" data-formula-set="Descuento compuesto">
-          <p>V = Cn(1 - d)^n</p>
-          <p>d = 1 - (V / Cn)^(1/n)</p>
-          <p>Cn = V / (1 - d)^n</p>
-        </div>
+        <FormulaBlock title="Descuento compuesto" :formulas="compoundDiscountFormulas" compact />
       </div>
     </Accordion>
 
     <Accordion id="mfu1-t7" title="Equivalencia de Tasas y Puntos Porcentuales" :icon="Scale" number="Tema 7" color="teal">
       <div class="section-block">
         <h4>Equivalencia interés-descuento</h4>
-        <div class="formula-block compact" data-formula-set="Equivalencia de tasas">
-          <p>d = i / (1 + i)</p>
-          <p>i = d / (1 - d)</p>
-        </div>
+        <FormulaBlock title="Equivalencia de tasas" :formulas="rateEquivalenceFormulas" compact />
       </div>
       <InfoCard type="example" label="Puntos porcentuales">
         <p>Si una tasa pasa de 28% a 31%, la variación es de 3 puntos porcentuales.</p>
@@ -171,6 +155,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, reactive } from 'vue'
 import Accordion from '../components/Accordion.vue'
+import FormulaBlock from '../components/FormulaBlock.vue'
 import InfoCard from '../components/InfoCard.vue'
 import UnitQuiz from '../components/UnitQuiz.vue'
 import { useStudyProgress } from '../composables/useStudyProgress'
@@ -179,6 +164,36 @@ import { Target, Percent, Calculator, TrendingUp, BarChart3, ArrowDownCircle, Sc
 const props = defineProps({
   searchQuery: { type: String, default: '' }
 })
+
+const simpleInterestFormulas = [
+  { label: 'Interés acumulado', latex: 'I = C \\cdot i \\cdot n' },
+  { label: 'Capital final', latex: 'C_n = C + I = C(1 + i \\cdot n)' },
+  { label: 'Capital inicial', latex: 'C = \\frac{C_n}{1 + i \\cdot n}' }
+]
+
+const compoundInterestFormulas = [
+  { label: 'Capital final', latex: 'C_n = C(1+i)^n' },
+  { label: 'Capital inicial', latex: 'C = \\frac{C_n}{(1+i)^n}' },
+  { label: 'Tasa de interés', latex: 'i = \\sqrt[n]{\\frac{C_n}{C}} - 1' },
+  { label: 'Número de períodos', latex: 'n = \\frac{\\log(C_n / C)}{\\log(1+i)}' }
+]
+
+const simpleDiscountFormulas = [
+  { label: 'Descuento', latex: 'D = C_n \\cdot d \\cdot n' },
+  { label: 'Valor actual', latex: 'V = C_n - D' },
+  { label: 'Valor actual directo', latex: 'V = C_n(1 - d \\cdot n)' }
+]
+
+const compoundDiscountFormulas = [
+  { label: 'Valor actual', latex: 'V = C_n(1-d)^n' },
+  { label: 'Tasa de descuento', latex: 'd = 1 - \\sqrt[n]{\\frac{V}{C_n}}' },
+  { label: 'Valor nominal', latex: 'C_n = \\frac{V}{(1-d)^n}' }
+]
+
+const rateEquivalenceFormulas = [
+  { label: 'Descuento equivalente', latex: 'd = \\frac{i}{1+i}' },
+  { label: 'Interés equivalente', latex: 'i = \\frac{d}{1-d}' }
+]
 
 const topicMeta = [
   { id: 'mfu1-t1', anchor: 'mfu1-t1', number: 'Tema 1', title: 'Decisiones y principios', keywords: ['decisión de financiamiento', 'decisión de inversión', 'valor del dinero', 'riesgo', 'liquidez'] },
@@ -444,79 +459,11 @@ const quizQuestions = [
   margin: 4px 0;
 }
 
-.formula-block {
-  position: relative;
-  border: 2px solid var(--accent-teal);
-  border-radius: var(--radius-md);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-teal) 16%, transparent), transparent 56%),
-    var(--bg-card);
-  box-shadow: var(--shadow-sm);
-  padding: 18px 14px 12px;
-  margin: 12px 0;
-  overflow: hidden;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.formula-block::before {
-  content: attr(data-formula-set);
-  position: absolute;
-  top: 0;
-  right: 12px;
-  transform: translateY(-50%);
-  border: 1px solid var(--border-color);
-  border-radius: 999px;
-  background: var(--accent-teal);
-  color: #063327;
-  padding: 2px 10px;
-  font-size: 0.63rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.formula-block::after {
-  content: '';
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  right: -40px;
-  bottom: -62px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent-teal) 16%, transparent);
-  pointer-events: none;
-}
-
-.formula-block:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--border-color);
-}
-
-.formula-block p {
-  margin: 0;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.96rem;
-  font-weight: 700;
-  line-height: 1.45;
-  letter-spacing: 0.01em;
-  color: var(--text-primary);
-  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
-  border: 1px dashed color-mix(in srgb, var(--accent-teal) 55%, var(--border-color));
-  border-radius: 8px;
-  padding: 7px 10px;
-}
-
-.formula-block p + p {
-  margin-top: 8px;
-}
-
-.formula-block.compact {
-  padding-top: 16px;
-}
-
-.formula-block.compact p {
-  font-size: 0.88rem;
-  padding: 6px 9px;
+.learning-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.85fr);
+  gap: 14px;
+  align-items: start;
 }
 
 .formula-list {
@@ -570,17 +517,8 @@ const quizQuestions = [
     align-items: flex-start;
   }
 
-  .formula-block {
-    padding: 16px 10px 10px;
-  }
-
-  .formula-block::before {
-    right: 8px;
-    font-size: 0.56rem;
-  }
-
-  .formula-block p {
-    font-size: 0.88rem;
+  .learning-grid {
+    grid-template-columns: 1fr;
   }
 
   .formula-list li {

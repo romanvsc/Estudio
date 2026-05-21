@@ -3,7 +3,7 @@
     <div class="dash-header">
       <span class="badge badge-teal">Dashboard</span>
       <h1>Panel de Estudio — Matemática Financiera</h1>
-      <p class="dash-subtitle">Seguimiento de avance en la Unidad 1</p>
+      <p class="dash-subtitle">Seguimiento de avance en las unidades de Matemática Financiera</p>
     </div>
 
     <div class="stats-row">
@@ -21,19 +21,19 @@
     <div class="dash-section">
       <h3>Progreso por Unidad</h3>
       <div class="units-grid">
-        <div class="unit-card" @click="goToUnit(1)">
+        <div v-for="unit in unitCards" :key="unit.id" class="unit-card" @click="goToUnit(unit.id)">
           <div class="unit-card-head">
-            <h4>Unidad 1</h4>
-            <span class="badge badge-teal">{{ unitProgress.completion }}%</span>
+            <h4>Unidad {{ unit.id }}</h4>
+            <span class="badge" :class="unit.badgeClass">{{ unit.progress.completion }}%</span>
           </div>
-          <p>Fundamentos y Cálculo Financiero</p>
+          <p>{{ unit.title }}</p>
           <div class="unit-bar">
-            <div class="unit-fill" :style="{ width: unitProgress.completion + '%' }"></div>
+            <div class="unit-fill" :class="unit.fillClass" :style="{ width: unit.progress.completion + '%' }"></div>
           </div>
           <div class="unit-detail">
-            <span>{{ unitProgress.mastered }} dominados</span>
-            <span>{{ unitProgress.inProgress }} en curso</span>
-            <span>{{ unitProgress.quizzes }} quizzes</span>
+            <span>{{ unit.progress.mastered }} dominados</span>
+            <span>{{ unit.progress.inProgress }} en curso</span>
+            <span>{{ unit.progress.quizzes }} quizzes</span>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@
       <div v-if="quizHistory.length" class="history-list">
         <div v-for="(attempt, i) in quizHistory.slice(0, 20)" :key="i" class="history-item">
           <div class="history-left">
-            <span class="history-unit badge badge-teal">Unidad 1</span>
+            <span class="history-unit badge" :class="unitBadgeClass(attempt.unitId)">{{ unitLabel(attempt.unitId) }}</span>
             <span class="history-date">{{ formatDate(attempt.date) }}</span>
           </div>
           <div class="history-right">
@@ -70,6 +70,14 @@ import { getStudySnapshot, getAllQuizHistory } from '../composables/useStudyProg
 const router = useRouter()
 const snapshot = ref(null)
 
+const matFinUnits = [
+  { id: 1, storageId: 'mf-1', title: 'Fundamentos y cálculo financiero', badgeClass: 'badge-teal', fillClass: 'fill-teal' },
+  { id: 2, storageId: 'mf-2', title: 'Equivalencia financiera y tasas', badgeClass: 'badge-amber', fillClass: 'fill-amber' },
+  { id: 3, storageId: 'mf-3', title: 'Rentas', badgeClass: 'badge-purple', fillClass: 'fill-purple' }
+]
+
+const matFinUnitIds = matFinUnits.map(unit => unit.storageId)
+
 onMounted(() => {
   snapshot.value = getStudySnapshot()
   window.addEventListener('study-progress-updated', refreshData)
@@ -84,13 +92,26 @@ function refreshData() {
 }
 
 const quizHistory = computed(() => {
-  return getAllQuizHistory().filter(h => h.unitId === 'mf-1')
+  return getAllQuizHistory().filter(h => matFinUnitIds.includes(h.unitId))
 })
 
 const totalQuizzes = computed(() => quizHistory.value.length)
 
-const unitProgress = computed(() => {
-  const unit = snapshot.value?.units?.['mf-1']
+const unitCards = computed(() => {
+  return matFinUnits.map(unit => ({
+    ...unit,
+    progress: getUnitProgress(unit.storageId)
+  }))
+})
+
+const overallCompletion = computed(() => {
+  if (!unitCards.value.length) return 0
+  const total = unitCards.value.reduce((sum, unit) => sum + unit.progress.completion, 0)
+  return Math.round(total / unitCards.value.length)
+})
+
+function getUnitProgress(unitId) {
+  const unit = snapshot.value?.units?.[unitId]
   if (!unit?.topics) return { completion: 0, mastered: 0, inProgress: 0, quizzes: 0 }
   const topics = Object.values(unit.topics)
   const mastered = topics.filter(t => t.status === 'dominado').length
@@ -100,9 +121,7 @@ const unitProgress = computed(() => {
   const rawCompletion = total ? Math.round((mastered / total) * 100) : 0
   const completion = rawCompletion === 100 && quizzes === 0 ? 90 : rawCompletion
   return { completion, mastered, inProgress, quizzes }
-})
-
-const overallCompletion = computed(() => unitProgress.value.completion)
+}
 
 function scoreClass(attempt) {
   const pct = (attempt.score / Math.max(attempt.total, 1)) * 100
@@ -119,6 +138,16 @@ function formatDate(dateStr) {
 
 function goToUnit(unitId) {
   router.push(`/matfin/unidad/${unitId}`)
+}
+
+function unitLabel(unitId) {
+  const unit = matFinUnits.find(item => item.storageId === unitId)
+  return unit ? `Unidad ${unit.id}` : 'MatFin'
+}
+
+function unitBadgeClass(unitId) {
+  const unit = matFinUnits.find(item => item.storageId === unitId)
+  return unit?.badgeClass || 'badge-teal'
 }
 </script>
 
@@ -196,7 +225,8 @@ function goToUnit(unitId) {
 
 .units-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
 }
 
 .unit-card {
@@ -239,6 +269,14 @@ function goToUnit(unitId) {
   border-radius: 5px;
   background: var(--accent-teal);
   transition: width 0.5s ease;
+}
+
+.unit-fill.fill-amber {
+  background: var(--accent-amber);
+}
+
+.unit-fill.fill-purple {
+  background: var(--accent-purple);
 }
 
 .unit-detail {

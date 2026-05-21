@@ -99,6 +99,16 @@ const routes = [
         name: 'MatFinUnidad1',
         component: () => import('../views/MatFinUnidad1.vue')
     },
+    {
+        path: '/matfin/unidad/2',
+        name: 'MatFinUnidad2',
+        component: () => import('../views/MatFinUnidad2.vue')
+    },
+    {
+        path: '/matfin/unidad/3',
+        name: 'MatFinUnidad3',
+        component: () => import('../views/MatFinUnidad3.vue')
+    },
     // ── Legacy redirects ──
     { path: '/unidad/:id', redirect: to => `/contabilidad/unidad/${to.params.id}` },
     { path: '/dashboard', redirect: '/contabilidad/dashboard' },

@@ -116,7 +116,10 @@ const labelIcon = computed(() => {
 .type-tip .card-label { color: var(--accent-teal); }
 
 .type-important .card-accent { background: var(--accent-amber); }
-.type-important .card-body { background: var(--accent-amber-soft); }
+.type-important {
+  border-color: color-mix(in srgb, var(--accent-amber) 70%, var(--border-color));
+}
+.type-important .card-body { background: color-mix(in srgb, var(--accent-amber-soft) 76%, var(--bg-card)); }
 .type-important .card-label { color: var(--accent-amber); }
 
 .type-law .card-accent { background: var(--accent-red); }
