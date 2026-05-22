@@ -2,7 +2,7 @@
   <div class="app-layout" :data-theme="theme">
     <Sidebar
       v-if="isSubjectView"
-      :units="units"
+      :units="sidebarItems"
       :currentUnit="currentUnit"
       :topics="currentTopics"
       :currentTopic="currentTopicHash"
@@ -57,222 +57,90 @@
       <main class="content-area">
         <router-view v-slot="{ Component }">
           <transition name="slide" mode="out-in">
-            <component :is="Component" :key="$route.path" :searchQuery="searchQuery" />
+            <component :is="Component" :key="$route.fullPath" :searchQuery="searchQuery" />
           </transition>
         </router-view>
       </main>
     </div>
 
-    <!-- Mobile overlay -->
     <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
-
     <AchievementToast />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, markRaw } from 'vue'
+import { computed, onMounted, onUnmounted, shallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import Sidebar from './components/Sidebar.vue'
-import PomodoroTimer from './components/PomodoroTimer.vue'
 import AchievementToast from './components/AchievementToast.vue'
-import { Building2, ClipboardList, Scale, BarChart3, BookOpen, GraduationCap, LayoutDashboard, Monitor, Cpu, Ban, HardDrive, FolderTree, Calculator } from 'lucide-vue-next'
+import PomodoroTimer from './components/PomodoroTimer.vue'
+import Sidebar from './components/Sidebar.vue'
+import { getSubjectById } from './content/subjects'
+import { resolveIcon } from './content/iconRegistry'
 
 const route = useRoute()
 const router = useRouter()
 
-const theme = ref('light')
-const sidebarOpen = ref(false)
-const searchQuery = ref('')
-const searchFocused = ref(false)
-
-const contabilidadUnits = [
-  { id: 'dashboard', title: 'Panel General', icon: markRaw(LayoutDashboard), color: 'blue', label: 'Dashboard', path: '/contabilidad/dashboard' },
-  { id: 1, title: 'Contabilidad y Organización', icon: markRaw(Building2), color: 'blue' },
-  { id: 2, title: 'Aspectos Contables y Fiscales', icon: markRaw(ClipboardList), color: 'teal' },
-  { id: 3, title: 'Informes y Ecuaciones', icon: markRaw(Scale), color: 'amber' },
-  { id: 4, title: 'Cuentas Contables', icon: markRaw(BarChart3), color: 'purple' },
-  { id: 5, title: 'Registración y Normativa', icon: markRaw(BookOpen), color: 'red' },
-  { id: 'final', title: 'Modelo de Final 1', icon: markRaw(GraduationCap), color: 'gold', label: 'Examen', path: '/contabilidad/modelo-final' },
-  { id: 'final2', title: 'Modelo de Final 2', icon: markRaw(GraduationCap), color: 'gold', label: 'Examen', path: '/contabilidad/modelo-final-2' },
-  { id: 'final3', title: 'Modelo de Final 3', icon: markRaw(GraduationCap), color: 'gold', label: 'Examen', path: '/contabilidad/modelo-final-3' },
-  { id: 'final4', title: 'Modelo de Final 4', icon: markRaw(GraduationCap), color: 'gold', label: 'Examen', path: '/contabilidad/modelo-final-4' }
-]
-
-const sd3Units = [
-  { id: 'dashboard', title: 'Panel General', icon: markRaw(LayoutDashboard), color: 'blue', label: 'Dashboard', path: '/sd3/dashboard' },
-  { id: 1, title: 'Introducción a los SO', icon: markRaw(Monitor), color: 'blue' },
-  { id: 2, title: 'Procesos', icon: markRaw(Cpu), color: 'teal' },
-  { id: 3, title: 'Bloqueo Irreversible', icon: markRaw(Ban), color: 'amber' },
-  { id: 4, title: 'Administración de Memoria', icon: markRaw(HardDrive), color: 'purple' },
-  { id: 5, title: 'Sistema de Archivos', icon: markRaw(FolderTree), color: 'red' }
-]
-
-const matfinUnits = [
-  { id: 'dashboard', title: 'Panel General', icon: markRaw(LayoutDashboard), color: 'blue', label: 'Dashboard', path: '/matfin/dashboard' },
-  { id: 1, title: 'Fundamentos y cálculo financiero', icon: markRaw(Calculator), color: 'teal' },
-  { id: 2, title: 'Equivalencia financiera y tasas', icon: markRaw(Scale), color: 'amber' },
-  { id: 3, title: 'Rentas', icon: markRaw(BarChart3), color: 'purple' }
-]
-
-const topicCatalog = {
-  contabilidad: {
-    1: [
-      { id: 'u1-t1', number: 'Tema 1', title: 'Ente y persona jurídica' },
-      { id: 'u1-t2', number: 'Tema 2', title: 'Organización y elementos' },
-      { id: 'u1-t3', number: 'Tema 3', title: 'Clasificación de organizaciones' },
-      { id: 'u1-t4', number: 'Tema 4', title: 'Tipos societarios' },
-      { id: 'u1-t5', number: 'Tema 5', title: 'Empresa en marcha' },
-      { id: 'u1-t6', number: 'Tema 6', title: 'Inversión inicial y capital de trabajo' },
-      { id: 'u1-t7', number: 'Tema 7', title: 'Contabilidad como ciencia, técnica y arte' },
-      { id: 'u1-t8', number: 'Tema 8', title: 'Evolución histórica' },
-      { id: 'u1-t9', number: 'Temas 9-11', title: 'Objeto, objetivo e informes contables' }
-    ],
-    2: [
-      { id: 'u2-t1', number: 'Tema 1', title: 'Relación empresa-Estado' },
-      { id: 'u2-t2', number: 'Tema 2', title: 'Monotributo' },
-      { id: 'u2-t3', number: 'Tema 3', title: 'Régimen general' },
-      { id: 'u2-t4', number: 'Tema 4', title: 'Comprobantes' },
-      { id: 'u2-t5', number: 'Tema 5', title: 'Archivo y conservación' },
-      { id: 'u2-t6', number: 'Tema 6', title: 'Documentación respaldatoria' }
-    ],
-    3: [
-      { id: 'u3-t1', number: 'Tema 1', title: 'Informes contables' },
-      { id: 'u3-t2', number: 'Tema 2', title: 'Activo, pasivo y patrimonio neto' },
-      { id: 'u3-t3', number: 'Tema 3', title: 'Capital y ecuación patrimonial estática' },
-      { id: 'u3-t4', number: 'Tema 4', title: 'Resultados positivos y negativos' },
-      { id: 'u3-t5', number: 'Tema 5', title: 'Ecuación contable dinámica' },
-      { id: 'u3-t6', number: 'Tema 6', title: 'Rueda operativa' },
-      { id: 'u3-t7', number: 'Tema 7', title: 'Variaciones patrimoniales' },
-      { id: 'u3-t8', number: 'Tema 8', title: 'Partida doble vs partida simple' },
-      { id: 'u3-t9', number: 'Tema 9', title: 'Base devengado vs percibido' }
-    ],
-    4: [
-      { id: 'u4-t1', number: 'Tema 1', title: 'Definición de cuenta contable' },
-      { id: 'u4-t2', number: 'Tema 2', title: 'Clasificación según naturaleza' },
-      { id: 'u4-t3', number: 'Tema 3', title: 'Agrupación por rubro' },
-      { id: 'u4-t4', number: 'Tema 4', title: 'Unidades y criterios de valuación' },
-      { id: 'u4-t5', number: 'Tema 5', title: 'Clasificación por grado de análisis' },
-      { id: 'u4-t6', number: 'Tema 6', title: 'Plan de cuentas' },
-      { id: 'u4-t7', number: 'Tema 7', title: 'Manual de cuentas' },
-      { id: 'u4-t8', number: 'Tema 8', title: 'Componentes financieros explícitos e implícitos' }
-    ],
-    5: [
-      { id: 'u5-t1', number: 'Tema 1', title: 'Normas legales de la contabilidad' },
-      { id: 'u5-t2', number: 'Tema 2', title: 'Sujetos obligados a llevar libros' },
-      { id: 'u5-t3', number: 'Tema 3', title: 'Libros obligatorios' },
-      { id: 'u5-t4', number: 'Tema 4', title: 'Orden de uso de libros contables' },
-      { id: 'u5-t5', number: 'Tema 5', title: 'Medios de registración contable' },
-      { id: 'u5-t6', number: 'Tema 6', title: 'Ejemplos de registración' }
-    ]
-  },
-  sd3: {
-    1: [
-      { id: 'sd3u1-t1', number: 'Tema 1', title: 'Definición y propósito del SO' },
-      { id: 'sd3u1-t2', number: 'Tema 2', title: 'Evolución histórica' },
-      { id: 'sd3u1-t3', number: 'Tema 3', title: 'Funciones y componentes' },
-      { id: 'sd3u1-t4', number: 'Tema 4', title: 'Clasificación de los SO' },
-      { id: 'sd3u1-t5', number: 'Tema 5', title: 'Arquitecturas del SO' }
-    ],
-    2: [
-      { id: 'sd3u2-t1', number: 'Tema 1', title: 'Anatomía de un proceso' },
-      { id: 'sd3u2-t2', number: 'Tema 2', title: 'PCB y cambio de contexto' },
-      { id: 'sd3u2-t3', number: 'Tema 3', title: 'Ciclo de vida y jerarquías' },
-      { id: 'sd3u2-t4', number: 'Tema 4', title: 'Sincronización e IPC' },
-      { id: 'sd3u2-t5', number: 'Tema 5', title: 'Problemas clásicos' }
-    ],
-    3: [
-      { id: 'sd3u3-t1', number: 'Tema 1', title: 'Concepto de deadlock' },
-      { id: 'sd3u3-t2', number: 'Tema 2', title: 'Recursos expropiables y no expropiables' },
-      { id: 'sd3u3-t3', number: 'Tema 3', title: 'Condiciones de Coffman' },
-      { id: 'sd3u3-t4', number: 'Tema 4', title: 'Detección y recuperación' },
-      { id: 'sd3u3-t5', number: 'Tema 5', title: 'Evitación (banquero)' },
-      { id: 'sd3u3-t6', number: 'Tema 6', title: 'Prevención de bloqueos' }
-    ],
-    4: [
-      { id: 'sd3u4-t1', number: 'Tema 1', title: 'Monoprogramación' },
-      { id: 'sd3u4-t2', number: 'Tema 2', title: 'Multiprogramación con particiones' },
-      { id: 'sd3u4-t3', number: 'Tema 3', title: 'Intercambio (swapping)' },
-      { id: 'sd3u4-t4', number: 'Tema 4', title: 'Memoria virtual' },
-      { id: 'sd3u4-t5', number: 'Tema 5', title: 'Segmentación paginada' }
-    ],
-    5: [
-      { id: 'sd3u5-t1', number: 'Tema 1', title: 'Archivos: concepto y estructura' },
-      { id: 'sd3u5-t2', number: 'Tema 2', title: 'Estructuras de directorios' },
-      { id: 'sd3u5-t3', number: 'Tema 3', title: 'Implementación del sistema de archivos' },
-      { id: 'sd3u5-t4', number: 'Tema 4', title: 'Asignación de espacio y espacio libre' }
-    ]
-  },
-  matfin: {
-    1: [
-      { id: 'mfu1-t1', number: 'Tema 1', title: 'Decisiones financieras y principios' },
-      { id: 'mfu1-t2', number: 'Tema 2', title: 'Tasa de interés y componentes' },
-      { id: 'mfu1-t3', number: 'Tema 3', title: 'Operación financiera y elementos' },
-      { id: 'mfu1-t4', number: 'Tema 4', title: 'Interés simple' },
-      { id: 'mfu1-t5', number: 'Tema 5', title: 'Interés compuesto' },
-      { id: 'mfu1-t6', number: 'Tema 6', title: 'Descuento simple y compuesto' },
-      { id: 'mfu1-t7', number: 'Tema 7', title: 'Equivalencia de tasas' }
-    ],
-    2: [
-      { id: 'mfu2-t1', number: 'Tema 1', title: 'Equivalencia financiera de capitales' },
-      { id: 'mfu2-t2', number: 'Tema 2', title: 'Equivalencia en régimen simple' },
-      { id: 'mfu2-t3', number: 'Tema 3', title: 'Equivalencia en régimen compuesto' },
-      { id: 'mfu2-t4', number: 'Tema 4', title: 'TNA, TEA y frecuencia de capitalización' },
-      { id: 'mfu2-t5', number: 'Tema 5', title: 'Tasas efectivas equivalentes' },
-      { id: 'mfu2-t6', number: 'Tema 6', title: 'Capitalización continua' }
-    ],
-    3: [
-      { id: 'mfu3-t1', number: 'Tema 1', title: 'Concepto y clasificación de rentas' },
-      { id: 'mfu3-t2', number: 'Tema 2', title: 'Valor actual de rentas vencidas' },
-      { id: 'mfu3-t3', number: 'Tema 3', title: 'Rentas adelantadas y diferidas' },
-      { id: 'mfu3-t4', number: 'Tema 4', title: 'Imposiciones y valor final' },
-      { id: 'mfu3-t5', number: 'Tema 5', title: 'Rentas perpetuas' }
-    ]
-  }
-}
+const theme = shallowRef('light')
+const sidebarOpen = shallowRef(false)
+const searchQuery = shallowRef('')
+const searchFocused = shallowRef(false)
 
 const currentSubject = computed(() => {
-  if (route.path.startsWith('/sd3')) return 'sd3'
-  if (route.path.startsWith('/matfin')) return 'matfin'
-  if (route.path.startsWith('/contabilidad')) return 'contabilidad'
-  return null
+  const subject = route.params.subject || route.path.split('/')[1]
+  return getSubjectById(subject)?.id || null
 })
 
-const isSubjectView = computed(() => currentSubject.value !== null)
+const activeSubject = computed(() => getSubjectById(currentSubject.value))
+const isSubjectView = computed(() => Boolean(activeSubject.value))
 
-const units = computed(() => {
-  if (currentSubject.value === 'sd3') return sd3Units
-  if (currentSubject.value === 'matfin') return matfinUnits
-  return contabilidadUnits
+const sidebarItems = computed(() => {
+  if (!activeSubject.value) return []
+  return [
+    {
+      id: 'dashboard',
+      title: 'Panel General',
+      icon: resolveIcon('layoutDashboard'),
+      color: 'blue',
+      label: 'Dashboard',
+      path: activeSubject.value.dashboardPath
+    },
+    ...activeSubject.value.units.map((unit) => ({
+      id: unit.id,
+      title: unit.title,
+      icon: resolveIcon(unit.icon),
+      color: unit.color,
+      path: `/${activeSubject.value.id}/unidad/${unit.id}`
+    })),
+    ...activeSubject.value.exams.map((exam) => ({
+      id: exam.legacyId || exam.id,
+      title: exam.title,
+      icon: resolveIcon(exam.icon),
+      color: exam.color,
+      label: 'Examen',
+      path: exam.route
+    }))
+  ]
 })
 
 const currentUnit = computed(() => {
-  const p = route.path
-  if (p.includes('/dashboard')) return 'dashboard'
-  if (p === '/contabilidad/modelo-final') return 'final'
-  if (p === '/contabilidad/modelo-final-2') return 'final2'
-  if (p === '/contabilidad/modelo-final-3') return 'final3'
-  if (p === '/contabilidad/modelo-final-4') return 'final4'
-  const match = p.match(/\/unidad\/(\d+)/)
-  return match ? parseInt(match[1]) : null
+  if (route.path.includes('/dashboard')) return 'dashboard'
+  const unitMatch = route.path.match(/\/unidad\/(\d+)/)
+  if (unitMatch) return Number(unitMatch[1])
+  const exam = activeSubject.value?.exams.find((item) => route.path === item.route || route.path === item.legacyPath)
+  return exam?.legacyId || exam?.id || null
 })
 
 const currentTopicHash = computed(() => route.hash.replace(/^#/, ''))
 
 const currentTopics = computed(() => {
-  if (!currentSubject.value || typeof currentUnit.value !== 'number') return []
-  return topicCatalog[currentSubject.value]?.[currentUnit.value] || []
+  if (!activeSubject.value || typeof currentUnit.value !== 'number') return []
+  return activeSubject.value.units.find((unit) => unit.id === currentUnit.value)?.topics || []
 })
 
-function navigateTo(unitId) {
-  const prefix = currentSubject.value === 'sd3'
-    ? '/sd3'
-    : currentSubject.value === 'matfin'
-      ? '/matfin'
-      : '/contabilidad'
-  const list = units.value
-  const unit = list.find(u => u.id === unitId)
-  router.push(unit?.path || `${prefix}/unidad/${unitId}`)
+function navigateTo(itemId) {
+  const item = sidebarItems.value.find((entry) => entry.id === itemId)
+  if (!item) return
+  router.push(item.path)
   sidebarOpen.value = false
 }
 
@@ -297,12 +165,8 @@ function handleKeydown(e) {
 
 onMounted(() => {
   const saved = localStorage.getItem('theme')
-  if (saved) {
-    theme.value = saved
-    document.documentElement.setAttribute('data-theme', saved)
-  } else {
-    document.documentElement.setAttribute('data-theme', 'light')
-  }
+  theme.value = saved || 'light'
+  document.documentElement.setAttribute('data-theme', theme.value)
   window.addEventListener('keydown', handleKeydown)
 })
 

@@ -154,11 +154,11 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, reactive } from 'vue'
-import Accordion from '../components/Accordion.vue'
-import FormulaBlock from '../components/FormulaBlock.vue'
-import InfoCard from '../components/InfoCard.vue'
-import UnitQuiz from '../components/UnitQuiz.vue'
-import { useStudyProgress } from '../composables/useStudyProgress'
+import Accordion from '../../components/Accordion.vue'
+import FormulaBlock from '../../components/FormulaBlock.vue'
+import InfoCard from '../../components/InfoCard.vue'
+import UnitQuiz from '../../components/UnitQuiz.vue'
+import { useStudyProgress } from '../../composables/useStudyProgress'
 import { Target, Percent, Calculator, TrendingUp, BarChart3, ArrowDownCircle, Scale } from 'lucide-vue-next'
 
 const props = defineProps({

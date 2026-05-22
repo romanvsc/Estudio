@@ -272,6 +272,8 @@ export const useStudyStore = defineStore('study', () => {
             if (!data.units) data.units = {}
             if (!data.bookmarks) data.bookmarks = {}
             if (!data.notes) data.notes = {}
+            if (!data.achievements) data.achievements = {}
+            if (!data.streak) data.streak = { lastDate: null, current: 0, best: 0 }
             writeStorage(data)
             refresh()
             return true

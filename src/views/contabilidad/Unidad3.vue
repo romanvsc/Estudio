@@ -250,10 +250,10 @@
 </template>
 
 <script setup>
-import Accordion from '../components/Accordion.vue'
-import InfoCard from '../components/InfoCard.vue'
-import UnitQuiz from '../components/UnitQuiz.vue'
-import UnitStudyToolkit from '../components/UnitStudyToolkit.vue'
+import Accordion from '../../components/Accordion.vue'
+import InfoCard from '../../components/InfoCard.vue'
+import UnitQuiz from '../../components/UnitQuiz.vue'
+import UnitStudyToolkit from '../../components/UnitStudyToolkit.vue'
 import { FileText, Package, Scale, TrendingUp, RefreshCcw, RotateCw, Shuffle, BookOpen, Calendar } from 'lucide-vue-next'
 
 const props = defineProps({

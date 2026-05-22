@@ -229,10 +229,10 @@
 </template>
 
 <script setup>
-import Accordion from '../components/Accordion.vue'
-import InfoCard from '../components/InfoCard.vue'
-import UnitQuiz from '../components/UnitQuiz.vue'
-import UnitStudyToolkit from '../components/UnitStudyToolkit.vue'
+import Accordion from '../../components/Accordion.vue'
+import InfoCard from '../../components/InfoCard.vue'
+import UnitQuiz from '../../components/UnitQuiz.vue'
+import UnitStudyToolkit from '../../components/UnitStudyToolkit.vue'
 import { Clipboard, Tags, Layers, Ruler, ZoomIn, ListTree, Book, Percent } from 'lucide-vue-next'
 
 const props = defineProps({

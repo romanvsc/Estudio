@@ -63,6 +63,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { getSubjectById } from '../content/subjects'
 
 const props = defineProps({
   units: { type: Array, default: () => [] },
@@ -76,13 +77,9 @@ const props = defineProps({
 defineEmits(['navigate', 'navigate-topic', 'close'])
 
 const subjectMeta = computed(() => {
-  if (props.subject === 'sd3') {
-    return { icon: '🖥️', title: 'Sistemas de Datos III', totalUnits: 5 }
-  }
-  if (props.subject === 'matfin') {
-    return { icon: '🧮', title: 'Matemática Financiera', totalUnits: 3 }
-  }
-  return { icon: '📚', title: 'Contabilidad', totalUnits: 5 }
+  const subject = getSubjectById(props.subject)
+  if (!subject) return { icon: '📚', title: 'Guía de Estudio', totalUnits: 1 }
+  return { icon: subject.emoji, title: subject.title, totalUnits: subject.units.length }
 })
 
 const showTopicList = computed(() => {

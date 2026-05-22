@@ -205,11 +205,11 @@
 </template>
 
 <script setup>
-import Accordion from '../components/Accordion.vue'
-import InfoCard from '../components/InfoCard.vue'
-import ComparisonTable from '../components/ComparisonTable.vue'
-import UnitQuiz from '../components/UnitQuiz.vue'
-import UnitStudyToolkit from '../components/UnitStudyToolkit.vue'
+import Accordion from '../../components/Accordion.vue'
+import InfoCard from '../../components/InfoCard.vue'
+import ComparisonTable from '../../components/ComparisonTable.vue'
+import UnitQuiz from '../../components/UnitQuiz.vue'
+import UnitStudyToolkit from '../../components/UnitStudyToolkit.vue'
 import { Landmark, FileText, BarChart3, Receipt, FolderArchive, Files } from 'lucide-vue-next'
 
 const props = defineProps({

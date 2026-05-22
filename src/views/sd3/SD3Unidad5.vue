@@ -208,11 +208,11 @@
 
 <script setup>
 import { computed, onMounted, reactive } from 'vue'
-import Accordion from '../components/Accordion.vue'
-import InfoCard from '../components/InfoCard.vue'
-import ComparisonTable from '../components/ComparisonTable.vue'
-import UnitQuiz from '../components/UnitQuiz.vue'
-import { useStudyProgress } from '../composables/useStudyProgress'
+import Accordion from '../../components/Accordion.vue'
+import InfoCard from '../../components/InfoCard.vue'
+import ComparisonTable from '../../components/ComparisonTable.vue'
+import UnitQuiz from '../../components/UnitQuiz.vue'
+import { useStudyProgress } from '../../composables/useStudyProgress'
 import { File as FileIcon, FolderTree, HardDrive, Database } from 'lucide-vue-next'
 
 const props = defineProps({ searchQuery: { type: String, default: '' } })

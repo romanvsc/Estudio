@@ -305,9 +305,9 @@
 </template>
 
 <script setup>
-import Accordion from '../components/Accordion.vue'
-import InfoCard from '../components/InfoCard.vue'
-import UnitQuiz from '../components/UnitQuiz.vue'
+import Accordion from '../../components/Accordion.vue'
+import InfoCard from '../../components/InfoCard.vue'
+import UnitQuiz from '../../components/UnitQuiz.vue'
 import { Building2, ClipboardList, Scale, BarChart3, BookOpen, GraduationCap } from 'lucide-vue-next'
 
 defineProps({

@@ -38,11 +38,11 @@
   --header-height: 64px;
 
   /* ─── Neobrutalism Shadows (hard offset) ─── */
-  --shadow-sm: 2px 2px 0 #0a0a0a;
-  --shadow-md: 3px 3px 0 #0a0a0a;
-  --shadow-lg: 5px 5px 0 #0a0a0a;
-  --shadow-glow-blue: 3px 3px 0 #0a0a0a;
-  --shadow-glow-teal: 3px 3px 0 #0a0a0a;
+  --shadow-sm: 0 2px 0 rgba(10, 10, 10, 0.55);
+  --shadow-md: 0 4px 0 rgba(10, 10, 10, 0.48);
+  --shadow-lg: 0 7px 0 rgba(10, 10, 10, 0.42);
+  --shadow-glow-blue: 0 4px 0 rgba(67, 97, 238, 0.28);
+  --shadow-glow-teal: 0 4px 0 rgba(6, 214, 160, 0.28);
 
   /* ─── Transitions ─── */
   --transition-fast: 100ms ease;
@@ -85,11 +85,11 @@
   --border-color: #f0f0f0;
   --border-color-hover: #ffffff;
 
-  --shadow-sm: 2px 2px 0 #f0f0f0;
-  --shadow-md: 3px 3px 0 #f0f0f0;
-  --shadow-lg: 5px 5px 0 #f0f0f0;
-  --shadow-glow-blue: 3px 3px 0 #f0f0f0;
-  --shadow-glow-teal: 3px 3px 0 #f0f0f0;
+  --shadow-sm: 0 2px 0 rgba(240, 240, 240, 0.44);
+  --shadow-md: 0 4px 0 rgba(240, 240, 240, 0.36);
+  --shadow-lg: 0 7px 0 rgba(240, 240, 240, 0.28);
+  --shadow-glow-blue: 0 4px 0 rgba(76, 201, 240, 0.28);
+  --shadow-glow-teal: 0 4px 0 rgba(6, 214, 160, 0.28);
 }
 
 /* ─── Reset & Base ─── */
@@ -159,6 +159,12 @@ body {
 
 /* ─── Utilities ─── */
 .mono {
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', monospace;
+}
+
+.formula,
+.math-text,
+.katex {
   font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', monospace;
 }
 
@@ -264,7 +270,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  border: 2px solid var(--border-color);
+  border: var(--border-width) solid var(--border-color);
 }
 
 .badge-blue {
@@ -290,6 +296,11 @@ a:hover {
 .badge-purple {
   background: var(--accent-purple-soft);
   color: var(--accent-purple);
+}
+
+.badge-gold {
+  background: var(--accent-gold-soft);
+  color: var(--accent-gold);
 }
 
 /* ─── Content Spacing ─── */

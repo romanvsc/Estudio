@@ -399,8 +399,8 @@
 </template>
 
 <script setup>
-import Accordion from '../components/Accordion.vue'
-import InfoCard from '../components/InfoCard.vue'
+import Accordion from '../../components/Accordion.vue'
+import InfoCard from '../../components/InfoCard.vue'
 import { ClipboardList, Calculator, GraduationCap, BookOpen } from 'lucide-vue-next'
 
 defineProps({
